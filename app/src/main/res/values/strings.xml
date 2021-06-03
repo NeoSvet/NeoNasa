@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">NeoNasa</string>
+    <string name="loading">Загрузка...</string>
 </resources>
