@@ -27,6 +27,6 @@
         android:backgroundTint="?attr/colorAccent"
         app:layout_anchor="@id/bottom_app_bar"
         app:srcCompat="@drawable/ic_baseline_search_24"
-        app:tint="#FFFFFF" />
+        app:tint="?attr/colorOnPrimary" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

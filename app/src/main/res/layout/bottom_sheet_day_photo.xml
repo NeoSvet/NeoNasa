@@ -5,9 +5,9 @@
     android:id="@+id/bottom_sheet_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f6f6fa"
+    android:background="?attr/PicBackground"
     android:orientation="vertical"
-    android:padding="5dp"
+    android:padding="@dimen/half_indent"
     app:behavior_hideable="false"
     app:behavior_peekHeight="100dp"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
@@ -16,11 +16,13 @@
         android:id="@+id/tvTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="20sp" />
+        android:textColor="?attr/colorOnPrimary"
+        android:textSize="@dimen/big_text" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tvInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="14sp" />
+        android:textColor="?attr/colorOnPrimary"
+        android:textSize="@dimen/normal_text" />
 </LinearLayout>
