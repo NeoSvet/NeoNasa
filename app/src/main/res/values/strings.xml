@@ -5,4 +5,6 @@
     <string name="search_wiki">Найти в Википедии</string>
     <string name="wiki_helper_text">Поищите термин в википедии</string>
     <string name="close">Закрыть</string>
+    <string name="settings">Настройки</string>
+    <string name="home">Домой</string>
 </resources>

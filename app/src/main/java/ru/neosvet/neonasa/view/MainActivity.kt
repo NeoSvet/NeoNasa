@@ -18,20 +18,31 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.container, DayPhotoFragment())
             .commit()
+
+        setBottomAppBar()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        itemSearch = menu.add(R.string.search)
-        itemSearch.icon = ContextCompat.getDrawable(this, R.drawable.ic_baseline_search_24)
-        itemSearch.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+    private fun setBottomAppBar() {
+        fabSearch = findViewById(R.id.fabSearch)
+        bottom_app_bar = findViewById(R.id.bottom_app_bar)
 
-        itemClose = menu.add(R.string.close)
-        itemClose.icon = ContextCompat.getDrawable(this, R.drawable.ic_baseline_close_24)
-        itemClose.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
-        itemClose.isVisible = false
+        bottom_app_bar.navigationIcon =
+            ContextCompat.getDrawable(this, R.drawable.ic_menu_bottom_bar)
+        bottom_app_bar.fabAlignmentMode = BottomAppBar.FAB_ALIGNMENT_MODE_CENTER
+        bottom_app_bar.replaceMenu(R.menu.menu_bottom_bar)
 
-        return super.onCreateOptionsMenu(menu)
-    }
+        bottom_app_bar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.app_bar_home ->
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.container, DayPhotoFragment())
+                        .addToBackStack("")
+                        .commit()
+                R.id.app_bar_settings -> {
+                }
+            }
+            return@setOnMenuItemClickListener true
+        }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.equals(itemSearch)) {

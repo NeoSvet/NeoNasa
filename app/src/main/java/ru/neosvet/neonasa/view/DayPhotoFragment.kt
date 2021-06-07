@@ -46,7 +46,24 @@ class DayPhotoFragment : Fragment(), Observer<DayPhotoState> {
             bottomSheetBehavior =
                 BottomSheetBehavior.from(findViewById(R.id.bottom_sheet_container))
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+            setBottomSheetEvent()
         }
+    }
+
+    private fun setBottomSheetEvent() {
+        bottomSheetBehavior.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                val act = activity as MainActivity
+                when (newState) {
+                    BottomSheetBehavior.STATE_DRAGGING -> act.hideBar()
+                    BottomSheetBehavior.STATE_COLLAPSED -> act.showBar()
+                }
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+            }
+        })
     }
 
     override fun onResume() {
