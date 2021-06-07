@@ -48,6 +48,7 @@ class DayPhotoFragment : Fragment(), Observer<DayPhotoState> {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
             setBottomSheetEvent()
         }
+        model.sendServerRequest()
     }
 
     private fun setBottomSheetEvent() {

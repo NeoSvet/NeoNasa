@@ -1,7 +1,6 @@
 package ru.neosvet.neonasa.model
 
 import android.widget.ImageView
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.squareup.picasso.Picasso
@@ -18,12 +17,9 @@ class DayPhotoModel : ViewModel() {
     private val liveDataForViewToObserve: MutableLiveData<DayPhotoState> = MutableLiveData()
     private val retrofitImpl = NasaRetrofit()
 
-    fun getState(): LiveData<DayPhotoState> {
-        sendServerRequest()
-        return liveDataForViewToObserve
-    }
+    fun getState() = liveDataForViewToObserve
 
-    private fun sendServerRequest() {
+    fun sendServerRequest() {
         liveDataForViewToObserve.value = DayPhotoState.Loading(null)
         val apiKey: String = BuildConfig.NASA_API_KEY
         if (apiKey.isBlank()) {
