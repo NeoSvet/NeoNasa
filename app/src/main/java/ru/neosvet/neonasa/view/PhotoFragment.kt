@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.webkit.WebView
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -121,10 +120,10 @@ class PhotoFragment : Fragment(), Observer<PhotoState> {
                 showInfo(state.response.title, state.response.explanation);
             }
             is PhotoState.Loading -> {
-                showToast(getString(R.string.loading))
+                mainAct.showToast(getString(R.string.loading))
             }
             is PhotoState.Error -> {
-                showToast(state.error.message)
+                mainAct.showToast(state.error.message)
             }
         }
     }
@@ -134,13 +133,6 @@ class PhotoFragment : Fragment(), Observer<PhotoState> {
             return
         tvTitle.text = title
         tvInfo.text = info
-    }
-
-    private fun showToast(string: String?) {
-        Toast.makeText(context, string, Toast.LENGTH_SHORT).apply {
-            //setGravity(Gravity.BOTTOM, 0, 250)
-            show()
-        }
     }
 }
 

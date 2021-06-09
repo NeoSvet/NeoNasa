@@ -2,6 +2,7 @@ package ru.neosvet.neonasa.view
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.google.android.material.bottomappbar.BottomAppBar
@@ -186,5 +187,12 @@ class MainActivity : AppCompatActivity() {
 
     fun showPhotoBar() {
         barPhoto.performShow()
+    }
+
+    fun showToast(string: String?) {
+        Toast.makeText(this, string, Toast.LENGTH_SHORT).apply {
+            //setGravity(Gravity.BOTTOM, 0, 250)
+            show()
+        }
     }
 }
