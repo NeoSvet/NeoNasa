@@ -14,19 +14,29 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
+        android:visibility="gone"
         app:backgroundTint="?attr/colorPrimary"
-        app:fabAlignmentMode="center"
+        app:fabAlignmentMode="end"
         app:hideOnScroll="true"
-        app:layout_scrollFlags="scroll|enterAlways"
-        app:navigationIcon="@drawable/ic_menu_bottom_bar" />
+        app:layout_scrollFlags="scroll|enterAlways" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabSearch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="?attr/colorAccent"
+        android:contentDescription="@string/search_wiki"
+        android:visibility="gone"
         app:layout_anchor="@id/bottom_app_bar"
-        app:srcCompat="@drawable/ic_baseline_search_24"
+        app:srcCompat="@drawable/ic_search_24"
         app:tint="?attr/colorOnPrimary" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        app:labelVisibilityMode="selected"
+        app:menu="@menu/menu_bottom_navigation_view" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

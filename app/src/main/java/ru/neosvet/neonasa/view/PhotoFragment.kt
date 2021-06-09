@@ -14,12 +14,27 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.imageview.ShapeableImageView
 import ru.neosvet.neonasa.R
-import ru.neosvet.neonasa.model.DayPhotoModel
-import ru.neosvet.neonasa.repository.DayPhotoState
+import ru.neosvet.neonasa.model.PhotoModel
+import ru.neosvet.neonasa.repository.PhotoState
 
-class DayPhotoFragment : Fragment(), Observer<DayPhotoState> {
-    private val model: DayPhotoModel by lazy {
-        ViewModelProvider(this).get(DayPhotoModel::class.java)
+class PhotoFragment : Fragment(), Observer<PhotoState> {
+    companion object {
+        private val ARG_TYPE = "type"
+
+        @JvmStatic
+        fun newInstance(type: TypePhoto) =
+            PhotoFragment().apply {
+                arguments = Bundle().apply {
+                    putInt(ARG_TYPE, type.index)
+                }
+            }
+    }
+
+    private val model: PhotoModel by lazy {
+        ViewModelProvider(this).get(PhotoModel::class.java)
+    }
+    private val mainAct: MainActivity by lazy {
+        activity as MainActivity
     }
     private lateinit var ivPhoto: ShapeableImageView
     private lateinit var wvVideo: WebView
@@ -32,7 +47,7 @@ class DayPhotoFragment : Fragment(), Observer<DayPhotoState> {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_day_photo, container, false)
+        return inflater.inflate(R.layout.fragment_photo, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -45,20 +60,32 @@ class DayPhotoFragment : Fragment(), Observer<DayPhotoState> {
             tvInfo = findViewById(R.id.tvInfo)
             bottomSheetBehavior =
                 BottomSheetBehavior.from(findViewById(R.id.bottom_sheet_container))
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-            setBottomSheetEvent()
+            setBottomSheet()
+            ivPhoto.setOnClickListener {
+                mainAct.hideMainBar()
+            }
         }
-        model.sendServerRequest()
+        arguments?.getInt(ARG_TYPE)?.let {
+            when (it) {
+                TypePhoto.DAY.index ->
+                    model.requestDayPhoto()
+                TypePhoto.EARTH.index ->
+                    model.requestEarthPhoto()
+                TypePhoto.MARS.index ->
+                    model.requestMarsPhoto()
+            }
+        }
     }
 
-    private fun setBottomSheetEvent() {
+    private fun setBottomSheet() {
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+
         bottomSheetBehavior.addBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
-                val act = activity as MainActivity
                 when (newState) {
-                    BottomSheetBehavior.STATE_DRAGGING -> act.hideBar()
-                    BottomSheetBehavior.STATE_COLLAPSED -> act.showBar()
+                    BottomSheetBehavior.STATE_DRAGGING -> mainAct.hideBottomBars()
+                    BottomSheetBehavior.STATE_COLLAPSED -> mainAct.showPhotoBar()
                 }
             }
 
@@ -77,15 +104,15 @@ class DayPhotoFragment : Fragment(), Observer<DayPhotoState> {
         model.getState().removeObserver(this)
     }
 
-    override fun onChanged(state: DayPhotoState?) {
+    override fun onChanged(state: PhotoState?) {
         when (state) {
-            is DayPhotoState.SuccessPhoto -> {
+            is PhotoState.SuccessPhoto -> {
                 state.response.url?.let {
                     model.loadImage(ivPhoto, it)
                 }
                 showInfo(state.response.title, state.response.explanation);
             }
-            is DayPhotoState.SuccessVideo -> {
+            is PhotoState.SuccessVideo -> {
                 state.response.url?.let {
                     wvVideo.loadUrl(it)
                     ivPhoto.visibility = View.GONE
@@ -93,10 +120,10 @@ class DayPhotoFragment : Fragment(), Observer<DayPhotoState> {
                 }
                 showInfo(state.response.title, state.response.explanation);
             }
-            is DayPhotoState.Loading -> {
+            is PhotoState.Loading -> {
                 showToast(getString(R.string.loading))
             }
-            is DayPhotoState.Error -> {
+            is PhotoState.Error -> {
                 showToast(state.error.message)
             }
         }
@@ -115,4 +142,8 @@ class DayPhotoFragment : Fragment(), Observer<DayPhotoState> {
             show()
         }
     }
+}
+
+enum class TypePhoto(val index: Int) {
+    DAY(0), EARTH(1), MARS(2)
 }

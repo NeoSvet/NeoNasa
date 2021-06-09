@@ -10,4 +10,10 @@
     <string name="theme">Оформление</string>
     <string name="star_sky">Звездное небо</string>
     <string name="snowflakes">Снежинки</string>
+    <string name="photoday">Фото дня</string>
+    <string name="earth">Земля</string>
+    <string name="mars">Марс</string>
+    <string name="photo">Фото</string>
+    <string name="weather">Погода</string>
+    <string name="asteroids">Астероиды</string>
 </resources>

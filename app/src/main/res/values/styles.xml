@@ -14,6 +14,9 @@
         <item name="colorAccent">#7200F1</item>
         <item name="colorOnPrimarySurface">#48689b</item>
         <item name="PicBackground">@drawable/stars_repeat</item>
+        <item name="textInputStyle">@style/TextInputLayoutStyle</item>
+        <item name="chipStyle">@style/ChipStyle</item>
+        <item name="bottomNavigationStyle">@style/BottomNavStyle</item>
     </style>
 
     <style name="Theme.Snowflakes" parent="Theme.MaterialComponents.DayNight.NoActionBar">
@@ -30,6 +33,9 @@
         <item name="colorAccent">#B578FA</item>
         <item name="colorOnPrimarySurface">#2A75ED</item>
         <item name="PicBackground">@drawable/snowflakes_repeat</item>
+        <item name="textInputStyle">@style/TextInputLayoutStyle</item>
+        <item name="chipStyle">@style/ChipStyle</item>
+        <item name="bottomNavigationStyle">@style/BottomNavStyle</item>
     </style>
 
     <style name="TextInputLayoutStyle" parent="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
@@ -51,5 +57,11 @@
         <item name="android:textColor">?attr/colorOnSecondary</item>
         <item name="checkedIconTint">?attr/colorOnSecondary</item>
         <item name="chipBackgroundColor">?attr/colorSecondary</item>
+    </style>
+
+    <style name="BottomNavStyle" parent="@style/Widget.MaterialComponents.BottomNavigationView.Colored">
+        <item name="background">?attr/PicBackground</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="backgroundTint">?attr/colorPrimary</item>
     </style>
 </resources>
