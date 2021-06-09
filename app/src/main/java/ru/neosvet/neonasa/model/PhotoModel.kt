@@ -18,7 +18,7 @@ class PhotoModel : ViewModel() {
     fun getState() = liveDataForViewToObserve
 
     fun requestDayPhoto() {
-        liveDataForViewToObserve.value = PhotoState.Loading(null)
+        liveDataForViewToObserve.value = PhotoState.Loading
         val apiKey: String = BuildConfig.NASA_API_KEY
         if (apiKey.isBlank()) {
             PhotoState.Error(Throwable("You need API key"))
@@ -74,7 +74,7 @@ class PhotoModel : ViewModel() {
     )
 
     fun requestEarthPhoto() {
-        liveDataForViewToObserve.value = PhotoState.Loading(null)
+        liveDataForViewToObserve.value = PhotoState.Loading
         val apiKey: String = BuildConfig.NASA_API_KEY
         if (apiKey.isBlank()) {
             PhotoState.Error(Throwable("You need API key"))
@@ -126,7 +126,7 @@ class PhotoModel : ViewModel() {
     }
 
     fun requestMarsPhoto() {
-        liveDataForViewToObserve.value = PhotoState.Loading(null)
+        liveDataForViewToObserve.value = PhotoState.Loading
         val apiKey: String = BuildConfig.NASA_API_KEY
         if (apiKey.isBlank()) {
             PhotoState.Error(Throwable("You need API key"))
