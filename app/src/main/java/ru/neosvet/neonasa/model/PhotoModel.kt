@@ -12,13 +12,13 @@ import ru.neosvet.neonasa.R
 import ru.neosvet.neonasa.repository.*
 
 class PhotoModel : ViewModel() {
-    private val liveDataForViewToObserve: MutableLiveData<PhotoState> = MutableLiveData()
+    private val state: MutableLiveData<PhotoState> = MutableLiveData()
     private val retrofitImpl = NasaRetrofit()
 
-    fun getState() = liveDataForViewToObserve
+    fun getState() = state
 
     fun requestDayPhoto() {
-        liveDataForViewToObserve.value = PhotoState.Loading
+        state.value = PhotoState.Loading
         val apiKey: String = BuildConfig.NASA_API_KEY
         if (apiKey.isBlank()) {
             PhotoState.Error(Throwable("You need API key"))
@@ -32,29 +32,24 @@ class PhotoModel : ViewModel() {
                     if (rawResponse.isSuccessful) {
                         val response = rawResponse.body()
                         if (response == null || response.url.isNullOrEmpty()) {
-                            liveDataForViewToObserve.value =
-                                PhotoState.Error(Throwable("Response is empty"))
+                            state.value = PhotoState.Error(Throwable("Response is empty"))
                         } else if (response.mediaType.equals("image")) {
-                            liveDataForViewToObserve.value =
-                                PhotoState.SuccessPhoto(responseToPhoto(response))
+                            state.value = PhotoState.SuccessPhoto(responseToPhoto(response))
                         } else {
-                            liveDataForViewToObserve.value =
-                                PhotoState.SuccessVideo(responseToVideo(response))
+                            state.value = PhotoState.SuccessVideo(responseToVideo(response))
                         }
                     } else {
                         val message = rawResponse.message()
                         if (message.isNullOrEmpty()) {
-                            liveDataForViewToObserve.value =
-                                PhotoState.Error(Throwable("Unidentified error"))
+                            state.value = PhotoState.Error(Throwable("Unidentified error"))
                         } else {
-                            liveDataForViewToObserve.value =
-                                PhotoState.Error(Throwable(message))
+                            state.value = PhotoState.Error(Throwable(message))
                         }
                     }
                 }
 
                 override fun onFailure(call: Call<DayPhotoResponse>, error: Throwable) {
-                    liveDataForViewToObserve.value = PhotoState.Error(error)
+                    state.value = PhotoState.Error(error)
                 }
             })
         }
@@ -74,7 +69,7 @@ class PhotoModel : ViewModel() {
     )
 
     fun requestEarthPhoto() {
-        liveDataForViewToObserve.value = PhotoState.Loading
+        state.value = PhotoState.Loading
         val apiKey: String = BuildConfig.NASA_API_KEY
         if (apiKey.isBlank()) {
             PhotoState.Error(Throwable("You need API key"))
@@ -88,26 +83,26 @@ class PhotoModel : ViewModel() {
                     if (rawResponse.isSuccessful) {
                         val response = rawResponse.body()
                         if (response == null || response.size == 0) {
-                            liveDataForViewToObserve.value =
+                            state.value =
                                 PhotoState.Error(Throwable("Response is empty"))
                         } else {
-                            liveDataForViewToObserve.value =
+                            state.value =
                                 PhotoState.SuccessPhoto(responseToPhoto(response[0]))
                         }
                     } else {
                         val message = rawResponse.message()
                         if (message.isNullOrEmpty()) {
-                            liveDataForViewToObserve.value =
+                            state.value =
                                 PhotoState.Error(Throwable("Unidentified error"))
                         } else {
-                            liveDataForViewToObserve.value =
+                            state.value =
                                 PhotoState.Error(Throwable(message))
                         }
                     }
                 }
 
                 override fun onFailure(call: Call<List<EarthPhotoResponse>>, error: Throwable) {
-                    liveDataForViewToObserve.value = PhotoState.Error(error)
+                    state.value = PhotoState.Error(error)
                 }
             })
         }
@@ -126,7 +121,7 @@ class PhotoModel : ViewModel() {
     }
 
     fun requestMarsPhoto() {
-        liveDataForViewToObserve.value = PhotoState.Loading
+        state.value = PhotoState.Loading
         val apiKey: String = BuildConfig.NASA_API_KEY
         if (apiKey.isBlank()) {
             PhotoState.Error(Throwable("You need API key"))
@@ -140,26 +135,26 @@ class PhotoModel : ViewModel() {
                     if (rawResponse.isSuccessful) {
                         val response = rawResponse.body()
                         if (response == null || response.photos.size == 0) {
-                            liveDataForViewToObserve.value =
+                            state.value =
                                 PhotoState.Error(Throwable("Response is empty"))
                         } else {
-                            liveDataForViewToObserve.value =
+                            state.value =
                                 PhotoState.SuccessPhoto(responseToPhoto(response))
                         }
                     } else {
                         val message = rawResponse.message()
                         if (message.isNullOrEmpty()) {
-                            liveDataForViewToObserve.value =
+                            state.value =
                                 PhotoState.Error(Throwable("Unidentified error"))
                         } else {
-                            liveDataForViewToObserve.value =
+                            state.value =
                                 PhotoState.Error(Throwable(message))
                         }
                     }
                 }
 
                 override fun onFailure(call: Call<MarsPhotoResponse>, error: Throwable) {
-                    liveDataForViewToObserve.value = PhotoState.Error(error)
+                    state.value = PhotoState.Error(error)
                 }
             })
         }
