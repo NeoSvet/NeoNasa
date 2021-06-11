@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity() {
         barMain.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.bottom_view_photo -> {
-                    returnToPhoto()
+                    backToPhoto()
                 }
                 R.id.bottom_view_asteroids -> {
                     supportFragmentManager.beginTransaction()
@@ -81,6 +81,8 @@ class MainActivity : AppCompatActivity() {
             return@setOnNavigationItemSelectedListener true
         }
     }
+
+    fun getBottomBarHeight() = barMain.getMeasuredHeight()
 
     private fun setPhotoBar() {
         fabSearch = findViewById(R.id.fabSearch)
@@ -110,6 +112,11 @@ class MainActivity : AppCompatActivity() {
                 setFabSearch()
             }
         }
+
+        fabSearch.post({
+            fabSearch.visibility = View.GONE
+            barPhoto.visibility = View.GONE
+        })
     }
 
     private fun convertIdToType(id: Int) = when (id) {
@@ -118,8 +125,9 @@ class MainActivity : AppCompatActivity() {
         else -> TypePhoto.DAY
     }
 
-    private fun returnToPhoto() {
+    private fun backToPhoto() {
         barMain.visibility = View.GONE
+        barPhoto.visibility = View.VISIBLE
         fabSearch.visibility = View.VISIBLE
         setFabSearch()
         openDayPhoto()
@@ -171,6 +179,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun showMainBar() {
         barMain.visibility = View.VISIBLE
+        barPhoto.visibility = View.GONE
         fabSearch.visibility = View.GONE
     }
 

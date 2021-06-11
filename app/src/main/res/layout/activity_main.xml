@@ -14,7 +14,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:visibility="gone"
         app:backgroundTint="?attr/colorPrimary"
         app:fabAlignmentMode="end"
         app:hideOnScroll="true"
@@ -26,7 +25,6 @@
         android:layout_height="wrap_content"
         android:backgroundTint="?attr/colorAccent"
         android:contentDescription="@string/search_wiki"
-        android:visibility="gone"
         app:layout_anchor="@id/bottom_app_bar"
         app:srcCompat="@drawable/ic_search_24"
         app:tint="?attr/colorOnPrimary" />

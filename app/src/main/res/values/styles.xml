@@ -17,6 +17,7 @@
         <item name="textInputStyle">@style/TextInputLayoutStyle</item>
         <item name="chipStyle">@style/ChipStyle</item>
         <item name="bottomNavigationStyle">@style/BottomNavStyle</item>
+        <item name="cardViewStyle">@style/CardStyle</item>
     </style>
 
     <style name="Theme.Snowflakes" parent="Theme.MaterialComponents.DayNight.NoActionBar">
@@ -36,6 +37,7 @@
         <item name="textInputStyle">@style/TextInputLayoutStyle</item>
         <item name="chipStyle">@style/ChipStyle</item>
         <item name="bottomNavigationStyle">@style/BottomNavStyle</item>
+        <item name="cardViewStyle">@style/CardStyle</item>
     </style>
 
     <style name="TextInputLayoutStyle" parent="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
@@ -63,5 +65,23 @@
         <item name="background">?attr/PicBackground</item>
         <item name="android:textColor">?attr/colorOnPrimary</item>
         <item name="backgroundTint">?attr/colorPrimary</item>
+    </style>
+
+    <style name="CardStyle" parent="@style/Widget.MaterialComponents.CardView">
+        <item name="cardBackgroundColor">?attr/colorPrimary</item>
+        <item name="cardCornerRadius">@dimen/full_indent</item>
+        <item name="cardElevation">@dimen/half_indent</item>
+    </style>
+
+    <style name="TabStyle" parent="@style/Widget.MaterialComponents.TabLayout.Colored">
+        <item name="tabGravity">fill</item>
+        <item name="tabMode">scrollable</item>
+        <item name="backgroundTint">?attr/colorPrimary</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="tabTextAppearance">@style/TextStyle</item>
+    </style>
+
+    <style name="TextStyle">
+        <item name="android:textSize">12sp</item>
     </style>
 </resources>
