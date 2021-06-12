@@ -8,7 +8,6 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/lSearch"
-        style="@style/TextInputLayoutStyle"
         android:layout_width="match_parent"
         android:layout_height="90dp"
         android:hint="@string/search_wiki"

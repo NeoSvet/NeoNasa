@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="weather_types">
+        <item>Coronal Mass Ejection (CME)</item>
+        <item>Geomagnetic Storm (GST)</item>
+        <item>Interplanetary Shock (IPS)</item>
+        <item>Solar Flare (FLR)</item>
+        <item>Solar Energetic Particle (SEP)</item>
+        <item>Magnetopause Crossing (MPC)</item>
+        <item>Radiation Belt Enhancement (RBE)</item>
+        <item>Hight Speed Stream (HSS)</item>
+        <item>WSA+EnlilSimulation</item>
+    </string-array>
+</resources>
