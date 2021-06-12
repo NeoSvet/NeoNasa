@@ -1,0 +1,55 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.StarSky" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@android:color/black</item>
+        <item name="colorPrimaryVariant">#98B4DD</item>
+        <item name="colorOnPrimary">@android:color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">#406092</item>
+        <item name="colorOnSecondary">#C0DDFA</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimary</item>
+        <!-- Customize your theme here. -->
+        <item name="colorAccent">#7200F1</item>
+        <item name="colorOnPrimarySurface">#48689b</item>
+        <item name="PicBackground">@drawable/stars_repeat</item>
+    </style>
+
+    <style name="Theme.Snowflakes" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">#6C9ADA</item>
+        <item name="colorPrimaryVariant">#98B4DD</item>
+        <item name="colorOnPrimary">@android:color/black</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">#C0DDFA</item>
+        <item name="colorOnSecondary">#406092</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimary</item>
+        <!-- Customize your theme here. -->
+        <item name="colorAccent">#B578FA</item>
+        <item name="colorOnPrimarySurface">#2A75ED</item>
+        <item name="PicBackground">@drawable/snowflakes_repeat</item>
+    </style>
+
+    <style name="TextInputLayoutStyle" parent="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:background">?attr/PicBackground</item>
+        <item name="android:padding">@dimen/half_indent</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="android:textColorHint">?attr/colorOnSecondary</item>
+        <item name="counterTextColor">?attr/colorOnSecondary</item>
+        <item name="boxBackgroundMode">outline</item>
+        <item name="boxStrokeColor">@color/input_border</item>
+        <item name="boxStrokeWidth">2dp</item>
+        <item name="helperTextTextColor">?attr/colorOnSecondary</item>
+        <item name="hintTextColor">?attr/colorOnSecondary</item>
+        <item name="placeholderTextColor">?attr/colorOnSecondary</item>
+    </style>
+
+    <style name="ChipStyle" parent="@style/Widget.MaterialComponents.Chip.Choice">
+        <item name="checkedIconVisible">true</item>
+        <item name="android:textColor">?attr/colorOnSecondary</item>
+        <item name="checkedIconTint">?attr/colorOnSecondary</item>
+        <item name="chipBackgroundColor">?attr/colorSecondary</item>
+    </style>
+</resources>

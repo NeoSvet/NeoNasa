@@ -1,58 +1,126 @@
 package ru.neosvet.neonasa.view
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.google.android.material.bottomappbar.BottomAppBar
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import ru.neosvet.neonasa.R
+import ru.neosvet.neonasa.utils.SettingsUtils
+import ru.neosvet.neonasa.utils.Theme
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var itemSearch: MenuItem
-    private lateinit var itemClose: MenuItem
+    companion object {
+        val OPEN_SETTINGS = "open_settings"
+    }
+
+    private lateinit var fabSearch: FloatingActionButton
+    private lateinit var bottom_app_bar: BottomAppBar
+    private var isSearch = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val settings = SettingsUtils(this)
+        when (settings.getTheme()) {
+            Theme.STAR_SKY -> setTheme(R.style.Theme_StarSky)
+            Theme.SNOWFLAKES -> setTheme(R.style.Theme_Snowflakes)
+        }
         setContentView(R.layout.activity_main)
 
+        openDayPhoto()
+        setBottomAppBar()
+
+        if (intent.getBooleanExtra(OPEN_SETTINGS, false))
+            openSettings()
+    }
+
+    private fun setBottomAppBar() {
+        fabSearch = findViewById(R.id.fabSearch)
+        bottom_app_bar = findViewById(R.id.bottom_app_bar)
+
+        bottom_app_bar.navigationIcon =
+            ContextCompat.getDrawable(this, R.drawable.ic_menu_bottom_bar)
+        bottom_app_bar.fabAlignmentMode = BottomAppBar.FAB_ALIGNMENT_MODE_CENTER
+        bottom_app_bar.replaceMenu(R.menu.menu_bottom_bar)
+
+        bottom_app_bar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.app_bar_home -> {
+                    setFabSearch()
+                    while (supportFragmentManager.popBackStackImmediate()) {
+                        //Log.d("mylog", "pop back")
+                    }
+                }
+                R.id.app_bar_settings ->
+                    openSettings()
+            }
+            return@setOnMenuItemClickListener true
+        }
+
+        fabSearch.setOnClickListener {
+            if (isSearch) {
+                supportFragmentManager.beginTransaction()
+                    .add(R.id.container, WikiFragment())
+                    .addToBackStack("")
+                    .commit()
+                setFabClose()
+            } else {
+                supportFragmentManager.popBackStack()
+                setFabSearch()
+            }
+        }
+    }
+
+    private fun setFabClose() {
+        fabSearch.setImageDrawable(
+            ContextCompat.getDrawable(
+                this,
+                R.drawable.ic_baseline_close_24
+            )
+        )
+        isSearch = false
+    }
+
+    private fun setFabSearch() {
+        fabSearch.setImageDrawable(
+            ContextCompat.getDrawable(
+                this,
+                R.drawable.ic_baseline_search_24
+            )
+        )
+        isSearch = true
+    }
+
+    private fun openDayPhoto() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.container, DayPhotoFragment())
             .commit()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        itemSearch = menu.add(R.string.search)
-        itemSearch.icon = ContextCompat.getDrawable(this, R.drawable.ic_baseline_search_24)
-        itemSearch.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
-
-        itemClose = menu.add(R.string.close)
-        itemClose.icon = ContextCompat.getDrawable(this, R.drawable.ic_baseline_close_24)
-        itemClose.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
-        itemClose.isVisible = false
-
-        return super.onCreateOptionsMenu(menu)
+    private fun openSettings() {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.container, SettingsFragment())
+            .addToBackStack("")
+            .commit()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.equals(itemSearch)) {
-            supportFragmentManager.beginTransaction()
-                .add(R.id.container, WikiFragment())
-                .addToBackStack("")
-                .commit()
-            itemSearch.isVisible = false
-            itemClose.isVisible = true
-        } else { // itemClose
-            supportFragmentManager.popBackStack()
-            itemSearch.isVisible = true
-            itemClose.isVisible = false
-        }
-        return super.onOptionsItemSelected(item)
+    fun hideBar() {
+        bottom_app_bar.performHide()
+    }
+
+    fun showBar() {
+        bottom_app_bar.performShow()
     }
 
     override fun onBackPressed() {
-        if (itemClose.isVisible) {
-            itemSearch.isVisible = true
-            itemClose.isVisible = false
+        if (!isSearch) {
+            fabSearch.setImageDrawable(
+                ContextCompat.getDrawable(
+                    this,
+                    R.drawable.ic_baseline_search_24
+                )
+            )
+            isSearch = true
         }
         super.onBackPressed()
     }
