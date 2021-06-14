@@ -19,6 +19,9 @@ class AsteroidsFragment : Fragment(), Observer<AsteroidsState> {
     private val model: AsteroidsModel by lazy {
         ViewModelProvider(this).get(AsteroidsModel::class.java)
     }
+    private val mainAct: MainActivity by lazy {
+        activity as MainActivity
+    }
     private val dataAdapter = PairAdapter()
 
     override fun onCreateView(
@@ -51,26 +54,27 @@ class AsteroidsFragment : Fragment(), Observer<AsteroidsState> {
     }
 
     override fun onChanged(state: AsteroidsState?) {
-        dataAdapter.clear()
         when (state) {
             is AsteroidsState.Success -> {
+                mainAct.finishLoad(false)
                 responseToAdapter(state.response)
             }
             is AsteroidsState.Loading -> {
-                dataAdapter.addItem(
-                    getString(R.string.loading), ""
-                )
+                mainAct.startLoad()
             }
             is AsteroidsState.Error -> {
+                mainAct.finishLoad(false)
+                dataAdapter.clear()
                 state.error.message?.let {
                     dataAdapter.addItem("error", it)
                 }
+                dataAdapter.notifyDataSetChanged()
             }
         }
-        dataAdapter.notifyDataSetChanged()
     }
 
     private fun responseToAdapter(response: AsteroidsData) {
+        dataAdapter.clear()
         response.elementCount?.let {
             dataAdapter.addItem("asteroids count: ", it.toString())
         }
@@ -99,6 +103,7 @@ class AsteroidsFragment : Fragment(), Observer<AsteroidsState> {
                 dataAdapter.addItem(day.date, "No asteroids")
             }
         }
+        dataAdapter.notifyDataSetChanged()
     }
 
     private fun rounding(value: Double) = rounding(value.toString())

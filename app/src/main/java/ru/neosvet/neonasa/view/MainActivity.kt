@@ -1,13 +1,18 @@
 package ru.neosvet.neonasa.view
 
+import android.animation.ObjectAnimator
 import android.os.Bundle
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.RotateAnimation
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.animation.addListener
 import androidx.core.content.ContextCompat
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.imageview.ShapeableImageView
 import ru.neosvet.neonasa.R
 import ru.neosvet.neonasa.utils.SettingsUtils
 import ru.neosvet.neonasa.utils.Theme
@@ -21,7 +26,30 @@ class MainActivity : AppCompatActivity() {
     private lateinit var fabSearch: FloatingActionButton
     private lateinit var barPhoto: BottomAppBar
     private lateinit var barMain: BottomNavigationView
+    private lateinit var pLoad: View
+    private lateinit var ivStatus: ShapeableImageView
     private var isSearch = true
+    private val rotateAnim: RotateAnimation by lazy {
+        RotateAnimation(
+            180f, 360f, Animation.RELATIVE_TO_SELF,
+            0.5f, Animation.RELATIVE_TO_SELF, 0.5f
+        ).apply {
+            repeatCount = Animation.INFINITE
+            duration = 1000
+        }
+    }
+    private val showStatusAnim: ObjectAnimator by lazy {
+        ObjectAnimator.ofFloat(pLoad, "translationY", -80f)
+            .apply {
+                duration = 1000
+            }
+    }
+    private val hideStatusAnim: ObjectAnimator by lazy {
+        ObjectAnimator.ofFloat(pLoad, "translationY", 115f)
+            .apply {
+                duration = 1000
+            }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +62,8 @@ class MainActivity : AppCompatActivity() {
 
         setMainBar()
         setPhotoBar()
+        pLoad = findViewById(R.id.pLoad)
+        ivStatus = findViewById(R.id.ivStatus)
 
         if (savedInstanceState == null) {
             openDayPhoto()
@@ -175,6 +205,26 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.container, SettingsFragment())
             .commit()
+    }
+
+    fun startLoad() {
+        barMain.visibility = View.GONE
+        barPhoto.visibility = View.GONE
+        fabSearch.visibility = View.GONE
+
+        ivStatus.startAnimation(rotateAnim)
+        showStatusAnim.start()
+    }
+
+    fun finishLoad(isPhoto: Boolean) {
+        ivStatus.clearAnimation()
+        hideStatusAnim.addListener(onEnd = {
+            if (isPhoto)
+                hideMainBar()
+            else
+                showMainBar()
+        })
+        hideStatusAnim.start()
     }
 
     private fun showMainBar() {

@@ -84,4 +84,11 @@
     <style name="TextStyle">
         <item name="android:textSize">12sp</item>
     </style>
+
+    <style name="StatusLabel">
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:layout_marginEnd">@dimen/full_indent</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
 </resources>

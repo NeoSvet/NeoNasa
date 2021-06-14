@@ -106,12 +106,14 @@ class PhotoFragment : Fragment(), Observer<PhotoState> {
     override fun onChanged(state: PhotoState?) {
         when (state) {
             is PhotoState.SuccessPhoto -> {
+                mainAct.finishLoad(true)
                 state.response.url?.let {
                     model.loadImage(ivPhoto, it)
                 }
                 showInfo(state.response.title, state.response.explanation);
             }
             is PhotoState.SuccessVideo -> {
+                mainAct.finishLoad(true)
                 state.response.url?.let {
                     wvVideo.loadUrl(it)
                     ivPhoto.visibility = View.GONE
@@ -120,9 +122,10 @@ class PhotoFragment : Fragment(), Observer<PhotoState> {
                 showInfo(state.response.title, state.response.explanation);
             }
             is PhotoState.Loading -> {
-                mainAct.showToast(getString(R.string.loading))
+                mainAct.startLoad()
             }
             is PhotoState.Error -> {
+                mainAct.finishLoad(true)
                 mainAct.showToast(state.error.message)
             }
         }

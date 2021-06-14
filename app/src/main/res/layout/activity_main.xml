@@ -37,4 +37,26 @@
         app:labelVisibilityMode="selected"
         app:menu="@menu/menu_bottom_navigation_view" />
 
+    <LinearLayout
+        android:id="@+id/pLoad"
+        android:layout_width="wrap_content"
+        android:layout_height="56dp"
+        android:layout_gravity="bottom|center"
+        android:background="@drawable/load_shape"
+        android:orientation="horizontal">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivStatus"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:padding="15dp"
+            android:src="@drawable/refresh" />
+
+        <com.google.android.material.textview.MaterialTextView
+            style="@style/StatusLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/loading" />
+    </LinearLayout>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
