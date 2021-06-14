@@ -1,8 +1,20 @@
 package ru.neosvet.neonasa.repository
 
-sealed class DayPhotoState {
-    data class SuccessPhoto(val response: DayPhotoResponse) : DayPhotoState()
-    data class SuccessVideo(val response: DayPhotoResponse) : DayPhotoState()
-    data class Error(val error: Throwable) : DayPhotoState()
-    data class Loading(val progress: Int?) : DayPhotoState()
+sealed class PhotoState {
+    data class SuccessPhoto(val response: PhotoResponse) : PhotoState()
+    data class SuccessVideo(val response: VideoResponse) : PhotoState()
+    data class Error(val error: Throwable) : PhotoState()
+    object Loading : PhotoState()
+}
+
+sealed class WeatherState {
+    data class Success(val list: List<Pair<String, String>>) : WeatherState()
+    data class Error(val error: Throwable) : WeatherState()
+    object Loading : WeatherState()
+}
+
+sealed class AsteroidsState {
+    data class Success(val response: AsteroidsData) : AsteroidsState()
+    data class Error(val error: Throwable) : AsteroidsState()
+    object Loading : AsteroidsState()
 }

@@ -4,13 +4,25 @@
 
     <item
         android:id="@+id/app_bar_home"
-        android:icon="@drawable/ic_baseline_home"
+        android:icon="@drawable/ic_home"
         android:title="@string/home"
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/app_bar_settings"
-        android:icon="@drawable/ic_baseline_settings"
-        android:title="@string/settings"
+        android:id="@+id/app_bar_day"
+        android:icon="@drawable/ic_today"
+        android:title="@string/photoday"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/app_bar_earth"
+        android:icon="@drawable/ic_earth"
+        android:title="@string/earth"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/app_bar_mars"
+        android:icon="@drawable/ic_mars"
+        android:title="@string/mars"
         app:showAsAction="always" />
 </menu>

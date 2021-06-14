@@ -25,14 +25,12 @@
 
         <com.google.android.material.chip.Chip
             android:id="@+id/cStarSky"
-            style="@style/ChipStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/star_sky" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/cSnowflakes"
-            style="@style/ChipStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/snowflakes" />
