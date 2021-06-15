@@ -171,11 +171,11 @@ class PhotoModel : ViewModel() {
         )
     }
 
-    fun loadImage(view: ImageView, url: String) {
+    fun loadImage(view: ImageView, url: String, callback: com.squareup.picasso.Callback) {
         Picasso.get()
             .load(url)
             .placeholder(R.drawable.ic_no_photo_vector)
             .error(R.drawable.ic_load_error_vector)
-            .into(view)
+            .into(view, callback)
     }
 }
