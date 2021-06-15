@@ -12,11 +12,12 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.imageview.ShapeableImageView
+import com.squareup.picasso.Callback
 import ru.neosvet.neonasa.R
 import ru.neosvet.neonasa.model.PhotoModel
 import ru.neosvet.neonasa.repository.PhotoState
 
-class PhotoFragment : Fragment(), Observer<PhotoState> {
+class PhotoFragment : Fragment(), Observer<PhotoState>, Callback {
     companion object {
         private val ARG_TYPE = "type"
 
@@ -106,12 +107,19 @@ class PhotoFragment : Fragment(), Observer<PhotoState> {
     override fun onChanged(state: PhotoState?) {
         when (state) {
             is PhotoState.SuccessPhoto -> {
-                state.response.url?.let {
-                    model.loadImage(ivPhoto, it)
+                if (state.response.hdurl == null) {
+                    state.response.url?.let {
+                        model.loadImage(ivPhoto, it, this)
+                    }
+                } else {
+                    state.response.hdurl?.let {
+                        model.loadImage(ivPhoto, it, this)
+                    }
                 }
                 showInfo(state.response.title, state.response.explanation);
             }
             is PhotoState.SuccessVideo -> {
+                mainAct.finishLoad(true)
                 state.response.url?.let {
                     wvVideo.loadUrl(it)
                     ivPhoto.visibility = View.GONE
@@ -120,9 +128,10 @@ class PhotoFragment : Fragment(), Observer<PhotoState> {
                 showInfo(state.response.title, state.response.explanation);
             }
             is PhotoState.Loading -> {
-                mainAct.showToast(getString(R.string.loading))
+                mainAct.startLoad()
             }
             is PhotoState.Error -> {
+                mainAct.finishLoad(true)
                 mainAct.showToast(state.error.message)
             }
         }
@@ -133,6 +142,14 @@ class PhotoFragment : Fragment(), Observer<PhotoState> {
             return
         tvTitle.text = title
         tvInfo.text = info
+    }
+
+    override fun onSuccess() { //com.squareup.picasso
+        mainAct.finishLoad(true)
+    }
+
+    override fun onError(e: Exception?) { //com.squareup.picasso
+        mainAct.finishLoad(true)
     }
 }
 

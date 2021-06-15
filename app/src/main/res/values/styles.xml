@@ -77,11 +77,30 @@
         <item name="tabGravity">fill</item>
         <item name="tabMode">scrollable</item>
         <item name="backgroundTint">?attr/colorPrimary</item>
-        <item name="android:textColor">?attr/colorOnPrimary</item>
-        <item name="tabTextAppearance">@style/TextStyle</item>
+        <item name="tabTextAppearance">@style/TabTextStyle</item>
     </style>
 
-    <style name="TextStyle">
+    <style name="TabTextStyle">
         <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="StatusLabel">
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:layout_marginEnd">@dimen/full_indent</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="ExpandedTitleTextStyle">
+        <item name="android:shadowRadius">7</item>
+        <item name="android:ambientShadowAlpha">1</item>
+        <item name="android:spotShadowAlpha">1</item>
+        <item name="android:textSize">25sp</item>
+        <item name="android:shadowColor">@android:color/black</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="CollapsedTitleTextStyle">
+        <item name="android:textColor">?attr/colorOnPrimary</item>
     </style>
 </resources>
