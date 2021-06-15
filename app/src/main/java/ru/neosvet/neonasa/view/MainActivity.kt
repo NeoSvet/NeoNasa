@@ -62,8 +62,7 @@ class MainActivity : AppCompatActivity() {
 
         setMainBar()
         setPhotoBar()
-        pLoad = findViewById(R.id.pLoad)
-        ivStatus = findViewById(R.id.ivStatus)
+        setStatusBar()
 
         if (savedInstanceState == null) {
             openDayPhoto()
@@ -71,6 +70,14 @@ class MainActivity : AppCompatActivity() {
                 openSettings()
                 barMain.selectedItemId = R.id.bottom_view_settings
             }
+        }
+    }
+
+    private fun setStatusBar() {
+        pLoad = findViewById(R.id.pLoad)
+        ivStatus = findViewById(R.id.ivStatus)
+        pLoad.setOnClickListener {
+            finishLoad(false)
         }
     }
 

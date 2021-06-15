@@ -50,7 +50,7 @@
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:padding="15dp"
-            android:src="@drawable/refresh" />
+            android:src="@drawable/ic_refresh" />
 
         <com.google.android.material.textview.MaterialTextView
             style="@style/StatusLabel"
