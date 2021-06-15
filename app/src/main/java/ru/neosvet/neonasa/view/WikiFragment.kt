@@ -59,6 +59,5 @@ class WikiFragment : Fragment() {
 
     private fun startSearch() {
         wvWiki.loadUrl("https://en.wikipedia.org/w/index.php?search=${etSearch.text.toString()}")
-        wvWiki.visibility = View.VISIBLE
     }
 }

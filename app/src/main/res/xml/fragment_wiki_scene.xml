@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ConstraintSet android:id="@+id/SearchOnScreen">
+        <Constraint
+            android:id="@+id/lSearch"
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+        <Constraint
+            android:id="@+id/wvWiki"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="90dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </ConstraintSet>
+
+    <ConstraintSet
+        android:id="@+id/SearchOutScreen"
+        app:deriveConstraintsFrom="@id/SearchOnScreen">
+        <Constraint
+            android:id="@id/lSearch"
+            android:layout_width="0dp"
+            android:layout_height="90dp"
+            app:layout_constraintStart_toEndOf="parent" />
+        <Constraint
+            android:id="@+id/wvWiki"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </ConstraintSet>
+
+    <Transition
+        app:constraintSetEnd="@+id/SearchOutScreen"
+        app:constraintSetStart="@+id/SearchOnScreen"
+        app:duration="1000">
+
+        <OnSwipe
+            app:dragDirection="dragRight"
+            app:onTouchUp="autoComplete"
+            app:touchAnchorId="@+id/lSearch"
+            app:touchAnchorSide="right"
+            app:touchRegionId="@id/lSearch" />
+    </Transition>
+
+    <Transition
+        app:constraintSetEnd="@+id/SearchOnScreen"
+        app:constraintSetStart="@+id/SearchOutScreen"
+        app:duration="1000">
+
+        <OnClick app:targetId="@+id/btnWiki" />
+    </Transition>
+</MotionScene>

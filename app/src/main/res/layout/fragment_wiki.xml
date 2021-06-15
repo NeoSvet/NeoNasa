@@ -1,10 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:paddingTop="20dp"
+    app:layoutDescription="@xml/fragment_wiki_scene">
+
+    <WebView
+        android:id="@+id/wvWiki"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/btnWiki"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/full_indent"
+        android:background="@drawable/wiki_shape"
+        android:padding="@dimen/half_indent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_wikipedia"
+        app:tint="@android:color/black" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/lSearch"
@@ -16,9 +38,11 @@
         app:endIconCheckable="true"
         app:endIconDrawable="@drawable/ic_wikipedia"
         app:endIconMode="custom"
+        app:endIconTint="?attr/colorOnSecondary"
         app:helperText="@string/wiki_helper_text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etSearch"
@@ -29,10 +53,4 @@
             android:textColor="?attr/colorOnPrimary" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <WebView
-        android:id="@+id/wvWiki"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone" />
-
-</LinearLayout>
+</androidx.constraintlayout.motion.widget.MotionLayout>
