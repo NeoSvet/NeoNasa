@@ -31,11 +31,11 @@ class MainActivity : AppCompatActivity() {
     private var isSearch = true
     private val rotateAnim: RotateAnimation by lazy {
         RotateAnimation(
-            180f, 360f, Animation.RELATIVE_TO_SELF,
+            0f, 360f, Animation.RELATIVE_TO_SELF,
             0.5f, Animation.RELATIVE_TO_SELF, 0.5f
         ).apply {
             repeatCount = Animation.INFINITE
-            duration = 1000
+            duration = 1500
         }
     }
     private val showStatusAnim: ObjectAnimator by lazy {
@@ -174,11 +174,11 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
             .replace(
                 R.id.container,
-                PhotoFragment.newInstance(TypePhoto.DAY)
+                DayPhotoFragment()
             ).commit()
     }
 
-    private fun openPhoto(type: TypePhoto) {
+    fun openPhoto(type: TypePhoto) {
         setFabSearch()
 
         supportFragmentManager.beginTransaction()
