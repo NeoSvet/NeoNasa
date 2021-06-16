@@ -8,4 +8,5 @@
     <dimen name="appbar_video">150dp</dimen>
     <dimen name="status_show">20dp</dimen>
     <dimen name="status_hide">-60dp</dimen>
+    <dimen name="bottom_sheet_height">100dp</dimen>
 </resources>

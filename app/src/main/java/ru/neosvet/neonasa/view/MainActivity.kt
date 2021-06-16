@@ -266,6 +266,12 @@ class MainActivity : AppCompatActivity() {
         barPhoto.performHide()
     }
 
+    fun hideBottomBarsWithFab() {
+        hideBottomBars()
+        barPhoto.performHide()
+        fabSearch.visibility = View.GONE
+    }
+
     fun showPhotoBar() {
         barPhoto.visibility = View.VISIBLE
         fabSearch.visibility = View.VISIBLE

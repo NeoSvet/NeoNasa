@@ -5,17 +5,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebView
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.transition.ChangeBounds
+import androidx.transition.ChangeImageTransform
+import androidx.transition.TransitionManager
+import androidx.transition.TransitionSet
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.imageview.ShapeableImageView
 import com.squareup.picasso.Callback
 import ru.neosvet.neonasa.R
 import ru.neosvet.neonasa.model.PhotoModel
 import ru.neosvet.neonasa.repository.PhotoState
+import ru.neosvet.neonasa.utils.DoubleClickListener
+
 
 class PhotoFragment : Fragment(), Observer<PhotoState>, Callback {
     companion object {
@@ -41,7 +48,7 @@ class PhotoFragment : Fragment(), Observer<PhotoState>, Callback {
     private lateinit var tvTitle: TextView
     private lateinit var tvInfo: TextView
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
-
+    private var isExpanded = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -61,9 +68,7 @@ class PhotoFragment : Fragment(), Observer<PhotoState>, Callback {
             bottomSheetBehavior =
                 BottomSheetBehavior.from(findViewById(R.id.bottom_sheet_container))
             setBottomSheet()
-            ivPhoto.setOnClickListener {
-                mainAct.hideMainBar()
-            }
+            setPhotoListeners()
         }
         arguments?.getInt(ARG_TYPE)?.let {
             when (it) {
@@ -75,6 +80,42 @@ class PhotoFragment : Fragment(), Observer<PhotoState>, Callback {
                     model.requestMarsPhoto()
             }
         }
+    }
+
+    private fun setPhotoListeners() {
+        ivPhoto.setOnClickListener(object : DoubleClickListener() {
+            override fun onSingleClick(v: View) {
+                mainAct.hideMainBar()
+                mainAct.showPhotoBar()
+            }
+
+            override fun onDoubleClick(v: View) {
+                changePhotoState()
+            }
+        })
+    }
+
+    private fun changePhotoState() {
+        isExpanded = !isExpanded
+        if (isExpanded) {
+            mainAct.hideBottomBarsWithFab()
+            bottomSheetBehavior.peekHeight = 0
+        } else {
+            mainAct.showPhotoBar()
+            bottomSheetBehavior.peekHeight =
+                resources.getDimension(R.dimen.bottom_sheet_height).toInt()
+        }
+
+        val root = ivPhoto.parent as ViewGroup
+        TransitionManager.beginDelayedTransition(
+            root, TransitionSet()
+                .addTransition(ChangeBounds())
+                .addTransition(ChangeImageTransform())
+        )
+
+        ivPhoto.scaleType =
+            if (isExpanded) ImageView.ScaleType.CENTER_CROP
+            else ImageView.ScaleType.FIT_START
     }
 
     private fun setBottomSheet() {
