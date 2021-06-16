@@ -38,10 +38,11 @@
         app:menu="@menu/menu_bottom_navigation_view" />
 
     <LinearLayout
-        android:id="@+id/pLoad"
+        android:id="@+id/barStatus"
         android:layout_width="wrap_content"
         android:layout_height="56dp"
         android:layout_gravity="bottom|center"
+        android:layout_marginBottom="@dimen/status_hide"
         android:background="@drawable/load_shape"
         android:orientation="horizontal">
 

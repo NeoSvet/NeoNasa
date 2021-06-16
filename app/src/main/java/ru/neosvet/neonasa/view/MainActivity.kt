@@ -3,12 +3,14 @@ package ru.neosvet.neonasa.view
 import android.animation.ObjectAnimator
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.animation.addListener
 import androidx.core.content.ContextCompat
+import androidx.transition.*
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -26,9 +28,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var fabSearch: FloatingActionButton
     private lateinit var barPhoto: BottomAppBar
     private lateinit var barMain: BottomNavigationView
-    private lateinit var pLoad: View
+    private lateinit var barStatus: LinearLayout
     private lateinit var ivStatus: ShapeableImageView
     private var isSearch = true
+    private var mainBarIsHide = false
     private val rotateAnim: RotateAnimation by lazy {
         RotateAnimation(
             0f, 360f, Animation.RELATIVE_TO_SELF,
@@ -38,16 +41,16 @@ class MainActivity : AppCompatActivity() {
             duration = 1500
         }
     }
-    private val showStatusAnim: ObjectAnimator by lazy {
-        ObjectAnimator.ofFloat(pLoad, "translationY", -80f)
+    private val animShowMainBar: ObjectAnimator by lazy {
+        ObjectAnimator.ofFloat(barMain, "translationY", 0f)
             .apply {
-                duration = 1000
+                duration = 500
             }
     }
-    private val hideStatusAnim: ObjectAnimator by lazy {
-        ObjectAnimator.ofFloat(pLoad, "translationY", 115f)
+    private val animHideMainBar: ObjectAnimator by lazy {
+        ObjectAnimator.ofFloat(barMain, "translationY", 115f)
             .apply {
-                duration = 1000
+                duration = 500
             }
     }
 
@@ -74,9 +77,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setStatusBar() {
-        pLoad = findViewById(R.id.pLoad)
+        barStatus = findViewById(R.id.barStatus)
         ivStatus = findViewById(R.id.ivStatus)
-        pLoad.setOnClickListener {
+        barStatus.setOnClickListener {
             finishLoad(false)
         }
     }
@@ -163,7 +166,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun backToPhoto() {
-        barMain.visibility = View.GONE
+        hideMainBar()
         barPhoto.visibility = View.VISIBLE
         fabSearch.visibility = View.VISIBLE
         setFabSearch()
@@ -214,36 +217,48 @@ class MainActivity : AppCompatActivity() {
             .commit()
     }
 
+    fun startBottomAnim(target: ViewGroup, dimenId: Int) {
+        TransitionManager.beginDelayedTransition(target)
+        val params = target.getLayoutParams() as ViewGroup.MarginLayoutParams
+        params.bottomMargin = resources.getDimension(dimenId).toInt()
+        target.setLayoutParams(params)
+    }
+
     fun startLoad() {
-        barMain.visibility = View.GONE
+        hideMainBar()
         barPhoto.visibility = View.GONE
         fabSearch.visibility = View.GONE
 
         ivStatus.startAnimation(rotateAnim)
-        showStatusAnim.start()
+        startBottomAnim(barStatus, R.dimen.status_show)
     }
 
     fun finishLoad(isPhoto: Boolean) {
         ivStatus.clearAnimation()
-        hideStatusAnim.addListener(onEnd = {
-            if (isPhoto)
-                hideMainBar()
-            else
-                showMainBar()
-        })
-        hideStatusAnim.start()
+        startBottomAnim(barStatus, R.dimen.status_hide)
+
+        if (isPhoto)
+            showPhotoBar()
+        else
+            showMainBar()
     }
 
     private fun showMainBar() {
-        barMain.visibility = View.VISIBLE
         barPhoto.visibility = View.GONE
         fabSearch.visibility = View.GONE
+        if (!mainBarIsHide)
+            return
+        mainBarIsHide = false
+        barMain.clearAnimation()
+        animShowMainBar.start()
     }
 
     fun hideMainBar() {
-        barMain.visibility = View.GONE
-        barPhoto.visibility = View.VISIBLE
-        fabSearch.visibility = View.VISIBLE
+        if (mainBarIsHide)
+            return
+        mainBarIsHide = true
+        barMain.clearAnimation()
+        animHideMainBar.start()
     }
 
     fun hideBottomBars() {
@@ -251,7 +266,15 @@ class MainActivity : AppCompatActivity() {
         barPhoto.performHide()
     }
 
+    fun hideBottomBarsWithFab() {
+        hideBottomBars()
+        barPhoto.performHide()
+        fabSearch.visibility = View.GONE
+    }
+
     fun showPhotoBar() {
+        barPhoto.visibility = View.VISIBLE
+        fabSearch.visibility = View.VISIBLE
         barPhoto.performShow()
     }
 

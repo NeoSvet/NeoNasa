@@ -9,7 +9,7 @@
     android:orientation="vertical"
     android:padding="@dimen/half_indent"
     app:behavior_hideable="false"
-    app:behavior_peekHeight="100dp"
+    app:behavior_peekHeight="@dimen/bottom_sheet_height"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
     <com.google.android.material.textview.MaterialTextView
