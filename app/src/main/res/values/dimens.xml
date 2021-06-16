@@ -6,4 +6,6 @@
     <dimen name="normal_text">14sp</dimen>
     <dimen name="big_text">20sp</dimen>
     <dimen name="appbar_video">150dp</dimen>
+    <dimen name="status_show">20dp</dimen>
+    <dimen name="status_hide">-60dp</dimen>
 </resources>

@@ -52,13 +52,15 @@ class DayPhotoFragment : Fragment(), Observer<PhotoState>, Callback {
                 mainAct.openPhoto(TypePhoto.DAY)
             }
 
-            ivPhoto.setOnClickListener {
-                mainAct.hideMainBar()
+            val clicker = object : View.OnClickListener {
+                override fun onClick(v: View?) {
+                    mainAct.hideMainBar()
+                    mainAct.showPhotoBar()
+                }
             }
 
-            tvInfo.setOnClickListener {
-                mainAct.hideMainBar()
-            }
+            ivPhoto.setOnClickListener(clicker)
+            tvInfo.setOnClickListener(clicker)
         }
         model.requestDayPhoto()
     }
