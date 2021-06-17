@@ -135,11 +135,11 @@ class PhotoFragment : Fragment(), Observer<PhotoState>, Callback {
         val params = ivPhoto.getLayoutParams() as ViewGroup.MarginLayoutParams
 
         if (isExpanded) {
-            val img_h = ivPhoto.drawable.intrinsicHeight
-            val img_w = ivPhoto.drawable.intrinsicWidth
+            val img_h = ivPhoto.drawable.intrinsicHeight.toFloat()
+            val img_w = ivPhoto.drawable.intrinsicWidth.toFloat()
 
             params.height = sizeScreen.height
-            val f: Float = img_w.toFloat() * (sizeScreen.height.toFloat() / img_h.toFloat())
+            val f: Float = img_w * (sizeScreen.height.toFloat() / img_h)
             params.width = f.toInt()
 
             animPhotoScroll(f)
