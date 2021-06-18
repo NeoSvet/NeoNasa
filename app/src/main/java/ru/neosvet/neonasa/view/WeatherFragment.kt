@@ -21,7 +21,6 @@ class WeatherFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        addBottomMargin(view)
         initTab(view)
     }
 
@@ -31,12 +30,4 @@ class WeatherFragment : Fragment() {
         view_pager.adapter = WeatherPageAdapter(childFragmentManager, requireContext())
         tab_layout.setupWithViewPager(view_pager)
     }
-
-    private fun addBottomMargin(root: View) {
-        val params = root.layoutParams as ViewGroup.MarginLayoutParams
-        val mainAct = activity as MainActivity
-        params.bottomMargin = mainAct.getBottomBarHeight()
-        root.layoutParams = params
-    }
-
 }

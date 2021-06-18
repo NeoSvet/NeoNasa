@@ -122,8 +122,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun getBottomBarHeight() = barMain.getMeasuredHeight()
-
     private fun setPhotoBar() {
         fabSearch = findViewById(R.id.fabSearch)
         barPhoto = findViewById(R.id.bottom_app_bar)
