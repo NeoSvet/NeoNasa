@@ -12,8 +12,9 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.neosvet.neonasa.R
 import ru.neosvet.neonasa.list.PairAdapter
 import ru.neosvet.neonasa.model.AsteroidsModel
-import ru.neosvet.neonasa.repository.AsteroidsData
+import ru.neosvet.neonasa.repository.AsteroidsRepository
 import ru.neosvet.neonasa.repository.AsteroidsState
+import java.text.DecimalFormat
 
 class AsteroidsFragment : Fragment(), Observer<AsteroidsState> {
     private val model: AsteroidsModel by lazy {
@@ -22,6 +23,8 @@ class AsteroidsFragment : Fragment(), Observer<AsteroidsState> {
     private val mainAct: MainActivity by lazy {
         activity as MainActivity
     }
+    private val formatDiameter = DecimalFormat("#.0")
+    private val formatDistance = DecimalFormat("#,###")
     private val dataAdapter = PairAdapter()
 
     override fun onCreateView(
@@ -57,7 +60,7 @@ class AsteroidsFragment : Fragment(), Observer<AsteroidsState> {
         when (state) {
             is AsteroidsState.Success -> {
                 mainAct.finishLoad(false)
-                responseToAdapter(state.response)
+                fillList()
             }
             is AsteroidsState.Loading -> {
                 mainAct.startLoad()
@@ -73,46 +76,37 @@ class AsteroidsFragment : Fragment(), Observer<AsteroidsState> {
         }
     }
 
-    private fun responseToAdapter(response: AsteroidsData) {
+    private fun fillList() {
         dataAdapter.clear()
-        response.elementCount?.let {
-            dataAdapter.addItem("asteroids count: ", it.toString())
-        }
-        val s = StringBuilder()
-        for (day in response.days) {
-            day.asteroids.forEach {
+        val repository = AsteroidsRepository()
+        repository.getGroups()?.forEach {
+            val s = StringBuilder()
+            repository.getGroupList(it.date)?.forEach {
                 s.append("asteroid: ")
                 s.appendLine(it.name)
-                //Log.d("mylog", "link " + it.nasaJplUrl)
                 s.append("diameter (m): ")
-                s.append(rounding(it.estimatedDiameter.meters.estimatedDiameterMin))
+                s.append(formatDiameter.format(it.diameter_min))
                 s.append("-")
-                s.appendLine(rounding(it.estimatedDiameter.meters.estimatedDiameterMax))
-                it.closeApproachData.forEach {
-                    s.append("distance to ${it.orbitingBody} (km):  ")
-                    s.appendLine(rounding(it.missDistance.kilometers))
+                s.appendLine(formatDiameter.format(it.diameter_max))
+                s.append("distance to Earth (km):  ")
+                s.appendLine(formatDistance.format(it.distance))
+                s.append("priority:  ")
+                s.appendLine(it.priority)
+                it.note?.let {
+                    s.append("note:  ")
+                    s.appendLine(it)
                 }
                 s.appendLine()
             }
 
             if (s.isNotEmpty()) {
                 s.delete(s.length - 1, s.length)
-                dataAdapter.addItem(day.date, s.toString())
+                dataAdapter.addItem(it.title, s.toString())
                 s.clear()
             } else {
-                dataAdapter.addItem(day.date, "No asteroids")
+                dataAdapter.addItem(it.title, "No asteroids")
             }
         }
         dataAdapter.notifyDataSetChanged()
-    }
-
-    private fun rounding(value: Double) = rounding(value.toString())
-
-    private fun rounding(value: String): String {
-        val i = value.indexOf(".")
-        if (i > 0 && i + 4 < value.length)
-            return value.substring(0, i + 4)
-        else
-            return value
     }
 }

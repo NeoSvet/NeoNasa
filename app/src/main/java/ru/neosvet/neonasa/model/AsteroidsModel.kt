@@ -11,6 +11,7 @@ import ru.neosvet.neonasa.repository.*
 class AsteroidsModel : ViewModel() {
     private val state: MutableLiveData<AsteroidsState> = MutableLiveData()
     private val retrofitImpl = NasaRetrofit()
+    private val repository = AsteroidsRepository()
 
     fun getState() = state
 
@@ -31,7 +32,8 @@ class AsteroidsModel : ViewModel() {
                         if (response == null || response.objectsPerDay == null) {
                             state.value = AsteroidsState.Error(Throwable("Response is empty"))
                         } else {
-                            state.value = AsteroidsState.Success(responseToData(response))
+                            responseToRepository(response)
+                            state.value = AsteroidsState.Success
                         }
                     } else {
                         val message = rawResponse.message()
@@ -50,12 +52,13 @@ class AsteroidsModel : ViewModel() {
         }
     }
 
-    private fun responseToData(response: AsteroidsResponse): AsteroidsData {
-        val list = ArrayList<ADay>()
+    private fun responseToRepository(response: AsteroidsResponse) {
         response.objectsPerDay?.forEach {
-            list.add(ADay(it.key, it.value))
+            repository.addGroup(it.key)
+            it.value.forEach {
+                repository.addAsteroid(it)
+            }
         }
-        return AsteroidsData(response.links, response.elementCount, list)
     }
 
 }

@@ -69,16 +69,6 @@ data class Rover(
 )
 
 //for Asteroids
-data class AsteroidsData(
-    val links: Links?,
-    val elementCount: Int?,
-    val days: List<ADay>
-)
-data class ADay(
-    val date: String,
-    val asteroids: List<Asteroid>
-)
-
 data class AsteroidsResponse(
     @field:SerializedName("links") val links: Links?,
     @field:SerializedName("element_count") val elementCount: Int?,
