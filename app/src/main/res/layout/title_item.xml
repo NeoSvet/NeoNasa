@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/full_indent"
+    android:layout_marginTop="@dimen/half_indent"
+    android:layout_marginEnd="@dimen/full_indent"
+    android:layout_marginBottom="@dimen/half_indent"
+    app:cardBackgroundColor="?attr/colorSecondary">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tvTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/full_indent"
+        android:textColor="?attr/colorOnSecondary"
+        android:textSize="@dimen/big_text" />
+
+</androidx.cardview.widget.CardView>

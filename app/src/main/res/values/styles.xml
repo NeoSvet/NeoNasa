@@ -103,4 +103,14 @@
     <style name="CollapsedTitleTextStyle">
         <item name="android:textColor">?attr/colorOnPrimary</item>
     </style>
+
+    <style name="NormalTextStyle">
+        <item name="android:textSize">@dimen/normal_text</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+    </style>
+
+    <style name="SelectTextStyle">
+        <item name="android:textSize">@dimen/normal_text</item>
+        <item name="android:textColor">?attr/colorOnSecondary</item>
+    </style>
 </resources>

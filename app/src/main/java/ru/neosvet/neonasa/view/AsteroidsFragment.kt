@@ -10,11 +10,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ru.neosvet.neonasa.R
-import ru.neosvet.neonasa.list.PairAdapter
+import ru.neosvet.neonasa.list.AsteroidsAdapter
 import ru.neosvet.neonasa.model.AsteroidsModel
 import ru.neosvet.neonasa.repository.AsteroidsRepository
 import ru.neosvet.neonasa.repository.AsteroidsState
-import java.text.DecimalFormat
 
 class AsteroidsFragment : Fragment(), Observer<AsteroidsState> {
     private val model: AsteroidsModel by lazy {
@@ -23,9 +22,7 @@ class AsteroidsFragment : Fragment(), Observer<AsteroidsState> {
     private val mainAct: MainActivity by lazy {
         activity as MainActivity
     }
-    private val formatDiameter = DecimalFormat("#.0")
-    private val formatDistance = DecimalFormat("#,###")
-    private val dataAdapter = PairAdapter()
+    private val dataAdapter = AsteroidsAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -69,7 +66,7 @@ class AsteroidsFragment : Fragment(), Observer<AsteroidsState> {
                 mainAct.finishLoad(false)
                 dataAdapter.clear()
                 state.error.message?.let {
-                    dataAdapter.addItem("error", it)
+                    dataAdapter.addItem("Error: " + it)
                 }
                 dataAdapter.notifyDataSetChanged()
             }
@@ -80,31 +77,9 @@ class AsteroidsFragment : Fragment(), Observer<AsteroidsState> {
         dataAdapter.clear()
         val repository = AsteroidsRepository()
         repository.getGroups()?.forEach {
-            val s = StringBuilder()
+            dataAdapter.addItem(it.title)
             repository.getGroupList(it.date)?.forEach {
-                s.append("asteroid: ")
-                s.appendLine(it.name)
-                s.append("diameter (m): ")
-                s.append(formatDiameter.format(it.diameter_min))
-                s.append("-")
-                s.appendLine(formatDiameter.format(it.diameter_max))
-                s.append("distance to Earth (km):  ")
-                s.appendLine(formatDistance.format(it.distance))
-                s.append("priority:  ")
-                s.appendLine(it.priority)
-                it.note?.let {
-                    s.append("note:  ")
-                    s.appendLine(it)
-                }
-                s.appendLine()
-            }
-
-            if (s.isNotEmpty()) {
-                s.delete(s.length - 1, s.length)
-                dataAdapter.addItem(it.title, s.toString())
-                s.clear()
-            } else {
-                dataAdapter.addItem(it.title, "No asteroids")
+                dataAdapter.addItem(it)
             }
         }
         dataAdapter.notifyDataSetChanged()
