@@ -7,7 +7,7 @@ interface AsteroidDao {
     @Query("SELECT * FROM AsteroidEntity WHERE name=:name")
     fun get(name: String): AsteroidEntity?
 
-    @Query("SELECT * FROM AsteroidEntity WHERE updated=:date")
+    @Query("SELECT * FROM AsteroidEntity WHERE updated=:date ORDER BY position")
     fun getDateList(date: Long): List<AsteroidEntity>?
 
     @Query("SELECT * FROM AsteroidEntity WHERE marked=1")

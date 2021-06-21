@@ -6,23 +6,29 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.neosvet.neonasa.R
 import ru.neosvet.neonasa.repository.room.AsteroidEntity
 
-class AsteroidsAdapter : RecyclerView.Adapter<AsteroidsHolder>() {
+class AsteroidsAdapter(
+    private val callbacks: ListCallbacks
+) : RecyclerView.Adapter<AsteroidsHolder>(), ItemTouchHelperAdapter {
     companion object {
         val TYPE_TITLE = 0
         val TYPE_ITEM = 1
     }
 
-    private val list = ArrayList<AsteroidsObject>()
+    private val data = ArrayList<AsteroidsObject>()
 
     fun addItem(title: String) {
-        list.add(AsteroidsObject.Title(title))
+        data.add(AsteroidsObject.Title(title))
     }
 
     fun addItem(entity: AsteroidEntity) {
-        list.add(AsteroidsObject.Item(entity))
+        data.add(AsteroidsObject.Item(entity))
     }
 
-    override fun getItemViewType(position: Int) = when (list[position]) {
+    fun getItem(position: Int) = data[position]
+
+    fun getItems() = data
+
+    override fun getItemViewType(position: Int) = when (data[position]) {
         is AsteroidsObject.Title -> TYPE_TITLE
         is AsteroidsObject.Item -> TYPE_ITEM
     }
@@ -30,21 +36,53 @@ class AsteroidsAdapter : RecyclerView.Adapter<AsteroidsHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AsteroidsHolder {
         return when (viewType) {
             TYPE_ITEM -> AsteroidsHolders.Item(
-                LayoutInflater.from(parent.context).inflate(R.layout.asteroid_item, parent, false)
+                LayoutInflater.from(parent.context).inflate(R.layout.asteroid_item, parent, false),
+                callbacks
             )
             else -> AsteroidsHolders.Title(
-                LayoutInflater.from(parent.context).inflate(R.layout.title_item, parent, false)
+                LayoutInflater.from(parent.context).inflate(R.layout.title_item, parent, false),
+                callbacks
             )
         }
     }
 
     override fun onBindViewHolder(holder: AsteroidsHolder, position: Int) {
-        holder.bind(list[position])
+        holder.bind(data[position])
     }
 
-    override fun getItemCount() = list.size
+    override fun getItemCount() = data.size
 
     fun clear() {
-        list.clear()
+        data.clear()
+    }
+
+    override fun onItemMove(fromPosition: Int, toPosition: Int) {
+        val index = findTitleIndex(fromPosition, toPosition)
+        if (index != -1)
+            return
+        val newPosition = if (toPosition > fromPosition)
+            toPosition - 1
+        else
+            toPosition
+        data.removeAt(fromPosition).let {
+            data.add(newPosition, it)
+        }
+        notifyItemMoved(fromPosition, newPosition)
+    }
+
+    private fun findTitleIndex(fromPosition: Int, toPosition: Int): Int {
+        val step = if (fromPosition < toPosition) 1 else -1
+        var index = fromPosition
+        while (index != toPosition) {
+            index += step
+            if (data[index] is AsteroidsObject.Title)
+                return index
+        }
+        return -1
+    }
+
+    override fun onItemDismiss(position: Int) {
+        data.removeAt(position)
+        notifyItemRemoved(position)
     }
 }

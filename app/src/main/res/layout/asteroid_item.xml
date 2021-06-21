@@ -44,11 +44,21 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivDragHandle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/full_indent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/barPriority"
+            app:srcCompat="@drawable/ic_hamburger_menu" />
+
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvDiameter"
             style="@style/NormalTextStyle"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            app:layout_constraintEnd_toStartOf="@id/ivDragHandle"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvName"
             tools:text="@string/diameter" />
@@ -56,8 +66,9 @@
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvDistance"
             style="@style/NormalTextStyle"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            app:layout_constraintEnd_toStartOf="@id/ivDragHandle"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvDiameter"
             tools:text="@string/distance" />

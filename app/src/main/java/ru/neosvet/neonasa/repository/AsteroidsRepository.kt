@@ -17,12 +17,14 @@ class AsteroidsRepository {
     fun getFilteredList(filter: String) = base.asteroidDao().getFilteredList(filter)
 
     private var lastDate: Long = 0
+    private var positionAsteroid = 0
 
     fun addGroup(item: String) {
         lastDate = dateFormat.parse(item).time
         base.groupDao().add(
             GroupEntity(date = lastDate, title = item)
         )
+        positionAsteroid = 0
     }
 
     fun addAsteroid(item: Asteroid) {
@@ -35,7 +37,6 @@ class AsteroidsRepository {
 
         val asteroid = base.asteroidDao().get(item.name)
 
-        //Log.d("mylog", "add: " + item.name + ", g=" + lastId)
         base.asteroidDao().add(
             AsteroidEntity(
                 name = item.name,
@@ -44,11 +45,13 @@ class AsteroidsRepository {
                 diameter_min = item.estimatedDiameter.meters.estimatedDiameterMin.toFloat(),
                 diameter_max = item.estimatedDiameter.meters.estimatedDiameterMax.toFloat(),
                 distance = distance,
+                position = positionAsteroid,
                 note = asteroid?.note,
                 priority = asteroid?.priority ?: detectPriority(distance),
                 marked = asteroid?.marked ?: false
             )
         )
+        positionAsteroid++
     }
 
     private fun detectPriority(distance: Int?): Int {
@@ -70,10 +73,16 @@ class AsteroidsRepository {
     }
 
     fun updateNote(asteroid: String, note: String): AsteroidEntity? {
-        val asteroid = getAsteroid(asteroid) ?: return null
-        asteroid.note = note
-        base.asteroidDao().update(asteroid)
-        return asteroid
+        val a = getAsteroid(asteroid) ?: return null
+        a.note = note
+        base.asteroidDao().update(a)
+        return a
+    }
+
+    fun updatePosition(asteroid: String, position: Int) {
+        val a = getAsteroid(asteroid) ?: return
+        a.position = position
+        base.asteroidDao().update(a)
     }
 
 }

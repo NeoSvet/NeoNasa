@@ -7,6 +7,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import ru.neosvet.neonasa.BuildConfig
 import ru.neosvet.neonasa.repository.*
+import ru.neosvet.neonasa.repository.room.AsteroidEntity
 
 class AsteroidsModel : ViewModel() {
     private val state: MutableLiveData<AsteroidsState> = MutableLiveData()
@@ -60,5 +61,4 @@ class AsteroidsModel : ViewModel() {
             }
         }
     }
-
 }
