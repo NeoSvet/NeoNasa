@@ -82,6 +82,7 @@ class AsteroidsAdapter(
     }
 
     override fun onItemDismiss(position: Int) {
+        callbacks.onItemDismissed(position)
         data.removeAt(position)
         notifyItemRemoved(position)
     }

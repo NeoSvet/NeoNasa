@@ -16,6 +16,10 @@ class AsteroidsModel : ViewModel() {
 
     fun getState() = state
 
+    fun removeAsterod(asteroid: AsteroidEntity) {
+        repository.removeAsterod(asteroid)
+    }
+
     fun requestAsteroids() {
         state.value = AsteroidsState.Loading
         val apiKey: String = BuildConfig.NASA_API_KEY

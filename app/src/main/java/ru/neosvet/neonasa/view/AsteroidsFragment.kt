@@ -53,6 +53,11 @@ class AsteroidsFragment : Fragment(), Observer<AsteroidsState> {
                 val item = dataAdapter.getItem(position) as AsteroidsObject.Item
                 updatePositionsInGroup(item.entity.updated)
             }
+
+            override fun onItemDismissed(position: Int) {
+                val item = dataAdapter.getItem(position) as AsteroidsObject.Item
+                model.removeAsterod(item.entity)
+            }
         })
 
         val rvAsteroids = root.findViewById(R.id.rvAsteroids) as RecyclerView

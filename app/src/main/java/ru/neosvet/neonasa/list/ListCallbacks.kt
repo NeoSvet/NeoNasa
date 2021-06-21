@@ -9,6 +9,7 @@ interface ListCallbacks {
     fun onItemClick(position: Int)
     fun onStartDrag(viewHolder: RecyclerView.ViewHolder)
     fun onItemMoved(position: Int)
+    fun onItemDismissed(position: Int)
 }
 
 interface ItemTouchHelperAdapter {

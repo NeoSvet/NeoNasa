@@ -85,4 +85,7 @@ class AsteroidsRepository {
         base.asteroidDao().update(a)
     }
 
+    fun removeAsterod(asteroid: AsteroidEntity) {
+        base.asteroidDao().delete(asteroid)
+    }
 }

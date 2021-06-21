@@ -81,6 +81,8 @@ sealed class AsteroidsHolders {
 
         override fun onItemClear() {
             itemView.background = context.getDrawable(R.drawable.primary_field)
+            if (adapterPosition == -1)
+                return //item is removed
             if (startPosition != adapterPosition)
                 callbacks.onItemMoved(adapterPosition)
         }
