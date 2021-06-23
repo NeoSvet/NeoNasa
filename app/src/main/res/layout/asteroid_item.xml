@@ -48,7 +48,7 @@
             android:id="@+id/ivDragHandle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/full_indent"
+            android:padding="@dimen/half_indent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/barPriority"
             app:srcCompat="@drawable/ic_hamburger_menu" />
@@ -57,7 +57,8 @@
             android:id="@+id/ivEdit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/full_indent"
+            android:background="@drawable/button_state"
+            android:padding="@dimen/half_indent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ivDragHandle"
             app:srcCompat="@drawable/ic_edit" />
@@ -87,6 +88,7 @@
             style="@style/SelectTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/button_state"
             android:text="@string/see_on_site_nasa"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvDistance" />

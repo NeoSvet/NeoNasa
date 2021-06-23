@@ -78,7 +78,8 @@
             android:id="@+id/ivClose"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/full_indent"
+            android:background="@drawable/button_state"
+            android:padding="@dimen/half_indent"
             app:layout_constraintBottom_toTopOf="@id/ivDone"
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/ic_close" />
@@ -88,7 +89,8 @@
             android:id="@+id/ivDone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/full_indent"
+            android:background="@drawable/button_state"
+            android:padding="@dimen/half_indent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/ic_done" />
