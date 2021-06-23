@@ -1,8 +1,17 @@
 package ru.neosvet.neonasa.list
 
+import android.content.Context
 import android.graphics.Canvas
+import android.graphics.Color
+import android.util.TypedValue
+import androidx.annotation.AttrRes
+import androidx.annotation.ColorInt
+import androidx.core.graphics.blue
+import androidx.core.graphics.green
+import androidx.core.graphics.red
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import ru.neosvet.neonasa.R
 import ru.neosvet.neonasa.repository.room.AsteroidEntity
 import kotlin.math.abs
 
@@ -93,8 +102,17 @@ class ItemTouchHelperCallback(private val adapter: AsteroidsAdapter) :
     ) {
         if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
             val width = viewHolder.itemView.width.toFloat()
-            val alpha = 1.0f - abs(dX) / width
-            viewHolder.itemView.alpha = alpha
+            val context = viewHolder.itemView.context
+            if (abs(dX) > 0) {
+                val primary = context.getColorFromAttr(R.attr.colorPrimary)
+                val m = (255 * (abs(dX) / width)).toInt()
+                val red = if (primary.red + m > 255) 255 else m + primary.red
+                val green = if (primary.green - m < 0) 0 else primary.green - m
+                val blue = if (primary.blue - m < 0) 0 else primary.blue - m
+                viewHolder.itemView.setBackgroundColor(Color.argb(255, red, green, blue))
+            } else {
+                viewHolder.itemView.background = context.getDrawable(R.drawable.primary_field)
+            }
             viewHolder.itemView.translationX = dX
         } else {
             super.onChildDraw(
@@ -102,5 +120,15 @@ class ItemTouchHelperCallback(private val adapter: AsteroidsAdapter) :
                 actionState, isCurrentlyActive
             )
         }
+    }
+
+    @ColorInt
+    fun Context.getColorFromAttr(
+        @AttrRes attrColor: Int,
+        typedValue: TypedValue = TypedValue(),
+        resolveRefs: Boolean = true
+    ): Int {
+        theme.resolveAttribute(attrColor, typedValue, resolveRefs)
+        return typedValue.data
     }
 }
