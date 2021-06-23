@@ -7,13 +7,16 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import ru.neosvet.neonasa.R
-import ru.neosvet.neonasa.list.PairAdapter
+import ru.neosvet.neonasa.list.*
 import ru.neosvet.neonasa.model.AsteroidsModel
-import ru.neosvet.neonasa.repository.AsteroidsData
+import ru.neosvet.neonasa.repository.AsteroidsRepository
 import ru.neosvet.neonasa.repository.AsteroidsState
+import ru.neosvet.neonasa.repository.room.AsteroidEntity
 
 class AsteroidsFragment : Fragment(), Observer<AsteroidsState> {
     private val model: AsteroidsModel by lazy {
@@ -22,7 +25,10 @@ class AsteroidsFragment : Fragment(), Observer<AsteroidsState> {
     private val mainAct: MainActivity by lazy {
         activity as MainActivity
     }
-    private val dataAdapter = PairAdapter()
+    private lateinit var itemTouchHelper: ItemTouchHelper
+    private lateinit var dataAdapter: AsteroidsAdapter
+    private lateinit var rvAsteroids: RecyclerView
+    private var snackbar: Snackbar? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,10 +43,89 @@ class AsteroidsFragment : Fragment(), Observer<AsteroidsState> {
         model.requestAsteroids()
     }
 
+    override fun onDestroyView() {
+        snackbar?.dismiss()
+        dataAdapter.deleteFromBase()
+        super.onDestroyView()
+    }
+
     private fun initList(root: View) {
-        val rvAsteroids = root.findViewById(R.id.rvAsteroids) as RecyclerView
+        dataAdapter = AsteroidsAdapter(object : ListCallbacks {
+            override fun onItemClick(position: Int) {
+            }
+
+            override fun onItemTouched(position: Int) {
+                dataAdapter.switchSwipe(position)
+            }
+
+            override fun onStartDrag(viewHolder: RecyclerView.ViewHolder) {
+                itemTouchHelper.startDrag(viewHolder)
+            }
+
+            override fun onItemMoved(position: Int) {
+                val item = dataAdapter.getItem(position) as AsteroidsObject.Item
+                updatePositionsInGroup(item.entity.updated)
+            }
+
+            override fun notifDeleteItem(position: Int) {
+                snackbar?.dismiss()
+                snackbar = Snackbar.make(
+                    rvAsteroids,
+                    R.string.item_deleted,
+                    AsteroidsAdapter.TIME_TO_DELETE.toInt()
+                )
+                snackbar?.setAction(R.string.restore, View.OnClickListener {
+                    val pos = dataAdapter.restoreDeletedItem()
+                    if (pos > -1)
+                        rvAsteroids.scrollToPosition(pos)
+                    snackbar?.dismiss()
+                })
+                snackbar?.show()
+            }
+        },
+            object : AsteroidEditor {
+                override fun deleteItem(item: AsteroidEntity) {
+                    model.removeAsterod(item)
+                }
+
+                override fun startEdit(position: Int) {
+                    dataAdapter.editItem(position)
+                }
+
+                override fun cancelEdit(position: Int) {
+                    dataAdapter.editItem(position)
+                }
+
+                override fun saveEdit(position: Int, asteroid: AsteroidEntity) {
+                    model.update(asteroid)
+                    dataAdapter.updateItem(position, asteroid)
+                }
+            })
+
+        rvAsteroids = root.findViewById(R.id.rvAsteroids) as RecyclerView
         rvAsteroids.layoutManager = LinearLayoutManager(requireContext())
         rvAsteroids.adapter = dataAdapter
+
+        itemTouchHelper = ItemTouchHelper(ItemTouchHelperCallback(dataAdapter))
+        itemTouchHelper.attachToRecyclerView(rvAsteroids)
+    }
+
+    private fun updatePositionsInGroup(date: Long) {
+        Thread({
+            var i = 0
+            var started = false
+            val repository = AsteroidsRepository()
+            dataAdapter.getItems().forEach {
+                if (it is AsteroidsObject.Item) {
+                    if (it.entity.updated == date) {
+                        started = true
+                        repository.updatePosition(it.entity.name, i)
+                        i++
+                    } else if (started)
+                        return@forEach
+                }
+            }
+        }).start()
     }
 
     override fun onResume() {
@@ -57,7 +142,7 @@ class AsteroidsFragment : Fragment(), Observer<AsteroidsState> {
         when (state) {
             is AsteroidsState.Success -> {
                 mainAct.finishLoad(false)
-                responseToAdapter(state.response)
+                fillList()
             }
             is AsteroidsState.Loading -> {
                 mainAct.startLoad()
@@ -66,53 +151,23 @@ class AsteroidsFragment : Fragment(), Observer<AsteroidsState> {
                 mainAct.finishLoad(false)
                 dataAdapter.clear()
                 state.error.message?.let {
-                    dataAdapter.addItem("error", it)
+                    dataAdapter.addItem("Error: " + it)
                 }
                 dataAdapter.notifyDataSetChanged()
             }
         }
     }
 
-    private fun responseToAdapter(response: AsteroidsData) {
+    private fun fillList() {
         dataAdapter.clear()
-        response.elementCount?.let {
-            dataAdapter.addItem("asteroids count: ", it.toString())
-        }
-        val s = StringBuilder()
-        for (day in response.days) {
-            day.asteroids.forEach {
-                s.append("asteroid: ")
-                s.appendLine(it.name)
-                //Log.d("mylog", "link " + it.nasaJplUrl)
-                s.append("diameter (m): ")
-                s.append(rounding(it.estimatedDiameter.meters.estimatedDiameterMin))
-                s.append("-")
-                s.appendLine(rounding(it.estimatedDiameter.meters.estimatedDiameterMax))
-                it.closeApproachData.forEach {
-                    s.append("distance to ${it.orbitingBody} (km):  ")
-                    s.appendLine(rounding(it.missDistance.kilometers))
-                }
-                s.appendLine()
+        val repository = AsteroidsRepository()
+        repository.getGroups()?.forEach {
+            dataAdapter.addItem(it.title)
+            repository.getGroupList(it.date)?.forEach {
+                dataAdapter.addItem(it)
             }
-
-            if (s.isNotEmpty()) {
-                s.delete(s.length - 1, s.length)
-                dataAdapter.addItem(day.date, s.toString())
-                s.clear()
-            } else {
-                dataAdapter.addItem(day.date, "No asteroids")
-            }
+            return@forEach
         }
         dataAdapter.notifyDataSetChanged()
-    }
-
-    private fun rounding(value: Double) = rounding(value.toString())
-
-    private fun rounding(value: String): String {
-        val i = value.indexOf(".")
-        if (i > 0 && i + 4 < value.length)
-            return value.substring(0, i + 4)
-        else
-            return value
     }
 }

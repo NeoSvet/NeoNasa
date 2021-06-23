@@ -14,7 +14,7 @@ sealed class WeatherState {
 }
 
 sealed class AsteroidsState {
-    data class Success(val response: AsteroidsData) : AsteroidsState()
+    object Success : AsteroidsState()
     data class Error(val error: Throwable) : AsteroidsState()
     object Loading : AsteroidsState()
 }

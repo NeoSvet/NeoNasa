@@ -16,4 +16,13 @@
     <string name="photo">Фото</string>
     <string name="weather">Погода</string>
     <string name="asteroids">Астероиды</string>
+    <string name="asteroid">Астероид</string>
+    <string name="diameter">Расчетный диаметр от %.1f до %.1f м.</string>
+    <string name="distance">Расстояние до Земли %,3d км.</string>
+    <string name="see_on_site_nasa">Посмотреть на сайте NASA</string>
+    <string name="priority">Приоритет</string>
+    <string name="note">Заметка</string>
+    <string name="more">… Ещё</string>
+    <string name="item_deleted">Элемент был удалён</string>
+    <string name="restore">Восстановить</string>
 </resources>

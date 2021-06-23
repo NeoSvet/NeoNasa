@@ -6,13 +6,22 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import ru.neosvet.neonasa.BuildConfig
-import ru.neosvet.neonasa.repository.*
+import ru.neosvet.neonasa.repository.AsteroidsRepository
+import ru.neosvet.neonasa.repository.AsteroidsResponse
+import ru.neosvet.neonasa.repository.AsteroidsState
+import ru.neosvet.neonasa.repository.NasaRetrofit
+import ru.neosvet.neonasa.repository.room.AsteroidEntity
 
 class AsteroidsModel : ViewModel() {
     private val state: MutableLiveData<AsteroidsState> = MutableLiveData()
     private val retrofitImpl = NasaRetrofit()
+    private val repository = AsteroidsRepository()
 
     fun getState() = state
+
+    fun removeAsterod(asteroid: AsteroidEntity) {
+        repository.removeAsterod(asteroid)
+    }
 
     fun requestAsteroids() {
         state.value = AsteroidsState.Loading
@@ -31,7 +40,8 @@ class AsteroidsModel : ViewModel() {
                         if (response == null || response.objectsPerDay == null) {
                             state.value = AsteroidsState.Error(Throwable("Response is empty"))
                         } else {
-                            state.value = AsteroidsState.Success(responseToData(response))
+                            responseToRepository(response)
+                            state.value = AsteroidsState.Success
                         }
                     } else {
                         val message = rawResponse.message()
@@ -50,12 +60,16 @@ class AsteroidsModel : ViewModel() {
         }
     }
 
-    private fun responseToData(response: AsteroidsResponse): AsteroidsData {
-        val list = ArrayList<ADay>()
+    private fun responseToRepository(response: AsteroidsResponse) {
         response.objectsPerDay?.forEach {
-            list.add(ADay(it.key, it.value))
+            repository.addGroup(it.key)
+            it.value.forEach {
+                repository.addAsteroid(it)
+            }
         }
-        return AsteroidsData(response.links, response.elementCount, list)
     }
 
+    fun update(asteroid: AsteroidEntity) {
+        repository.update(asteroid)
+    }
 }
