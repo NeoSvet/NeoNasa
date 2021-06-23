@@ -72,11 +72,8 @@ class AsteroidsRepository {
             return value.toInt()
     }
 
-    fun updateNote(asteroid: String, note: String): AsteroidEntity? {
-        val a = getAsteroid(asteroid) ?: return null
-        a.note = note
-        base.asteroidDao().update(a)
-        return a
+    fun update(asteroid: AsteroidEntity) {
+        base.asteroidDao().update(asteroid)
     }
 
     fun updatePosition(asteroid: String, position: Int) {

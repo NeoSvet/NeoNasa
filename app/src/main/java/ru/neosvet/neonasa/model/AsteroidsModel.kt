@@ -6,7 +6,10 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import ru.neosvet.neonasa.BuildConfig
-import ru.neosvet.neonasa.repository.*
+import ru.neosvet.neonasa.repository.AsteroidsRepository
+import ru.neosvet.neonasa.repository.AsteroidsResponse
+import ru.neosvet.neonasa.repository.AsteroidsState
+import ru.neosvet.neonasa.repository.NasaRetrofit
 import ru.neosvet.neonasa.repository.room.AsteroidEntity
 
 class AsteroidsModel : ViewModel() {
@@ -64,5 +67,9 @@ class AsteroidsModel : ViewModel() {
                 repository.addAsteroid(it)
             }
         }
+    }
+
+    fun update(asteroid: AsteroidEntity) {
+        repository.update(asteroid)
     }
 }

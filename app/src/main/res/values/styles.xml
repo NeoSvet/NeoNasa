@@ -41,7 +41,6 @@
     </style>
 
     <style name="TextInputLayoutStyle" parent="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="android:background">?attr/PicBackground</item>
         <item name="android:padding">@dimen/half_indent</item>
         <item name="android:textColor">?attr/colorOnPrimary</item>
         <item name="android:textColorHint">?attr/colorOnSecondary</item>

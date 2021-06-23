@@ -15,6 +15,7 @@ import ru.neosvet.neonasa.list.*
 import ru.neosvet.neonasa.model.AsteroidsModel
 import ru.neosvet.neonasa.repository.AsteroidsRepository
 import ru.neosvet.neonasa.repository.AsteroidsState
+import ru.neosvet.neonasa.repository.room.AsteroidEntity
 
 class AsteroidsFragment : Fragment(), Observer<AsteroidsState> {
     private val model: AsteroidsModel by lazy {
@@ -42,7 +43,10 @@ class AsteroidsFragment : Fragment(), Observer<AsteroidsState> {
     private fun initList(root: View) {
         dataAdapter = AsteroidsAdapter(object : ListCallbacks {
             override fun onItemClick(position: Int) {
-                //TODO("Not yet implemented")
+            }
+
+            override fun onItemTouched(position: Int) {
+                dataAdapter.switchSwipe(position)
             }
 
             override fun onStartDrag(viewHolder: RecyclerView.ViewHolder) {
@@ -58,7 +62,21 @@ class AsteroidsFragment : Fragment(), Observer<AsteroidsState> {
                 val item = dataAdapter.getItem(position) as AsteroidsObject.Item
                 model.removeAsterod(item.entity)
             }
-        })
+        },
+            object : AsteroidEditor {
+                override fun startEdit(position: Int) {
+                    dataAdapter.editItem(position)
+                }
+
+                override fun cancelEdit(position: Int) {
+                    dataAdapter.editItem(position)
+                }
+
+                override fun saveEdit(position: Int, asteroid: AsteroidEntity) {
+                    model.update(asteroid)
+                    dataAdapter.updateItem(position, asteroid)
+                }
+            })
 
         val rvAsteroids = root.findViewById(R.id.rvAsteroids) as RecyclerView
         rvAsteroids.layoutManager = LinearLayoutManager(requireContext())

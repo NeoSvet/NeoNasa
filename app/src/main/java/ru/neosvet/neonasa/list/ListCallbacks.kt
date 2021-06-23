@@ -3,13 +3,21 @@ package ru.neosvet.neonasa.list
 import android.graphics.Canvas
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import ru.neosvet.neonasa.repository.room.AsteroidEntity
 import kotlin.math.abs
 
 interface ListCallbacks {
     fun onItemClick(position: Int)
+    fun onItemTouched(position: Int)
     fun onStartDrag(viewHolder: RecyclerView.ViewHolder)
     fun onItemMoved(position: Int)
     fun onItemDismissed(position: Int)
+}
+
+interface AsteroidEditor {
+    fun startEdit(position: Int)
+    fun cancelEdit(position: Int)
+    fun saveEdit(position: Int, asteroid: AsteroidEntity)
 }
 
 interface ItemTouchHelperAdapter {
@@ -26,11 +34,11 @@ class ItemTouchHelperCallback(private val adapter: AsteroidsAdapter) :
     ItemTouchHelper.Callback() {
 
     override fun isLongPressDragEnabled(): Boolean {
-        return true
+        return false
     }
 
     override fun isItemViewSwipeEnabled(): Boolean {
-        return true
+        return adapter.isSwipable
     }
 
     override fun getMovementFlags(
@@ -59,7 +67,7 @@ class ItemTouchHelperCallback(private val adapter: AsteroidsAdapter) :
     }
 
     override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
-        if (actionState != ItemTouchHelper.ACTION_STATE_IDLE) {
+        if (actionState != ItemTouchHelper.ACTION_STATE_IDLE && viewHolder is ItemTouchHelperViewHolder) {
             val itemViewHolder = viewHolder as ItemTouchHelperViewHolder
             itemViewHolder.onItemSelected()
         }
@@ -68,8 +76,10 @@ class ItemTouchHelperCallback(private val adapter: AsteroidsAdapter) :
 
     override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
         super.clearView(recyclerView, viewHolder)
-        val itemViewHolder = viewHolder as ItemTouchHelperViewHolder
-        itemViewHolder.onItemClear()
+        if (viewHolder is ItemTouchHelperViewHolder) {
+            val itemViewHolder = viewHolder as ItemTouchHelperViewHolder
+            itemViewHolder.onItemClear()
+        }
     }
 
     override fun onChildDraw(
