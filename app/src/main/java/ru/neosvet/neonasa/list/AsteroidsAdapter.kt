@@ -1,5 +1,6 @@
 package ru.neosvet.neonasa.list
 
+import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -11,12 +12,16 @@ class AsteroidsAdapter(
     private val editor: AsteroidEditor
 ) : RecyclerView.Adapter<AsteroidsHolder>(), ItemTouchHelperAdapter {
     companion object {
+        val TIME_TO_DELETE: Long = 5000
         val TYPE_TITLE = 0
         val TYPE_ITEM = 1
         val TYPE_EDIT_ITEM = 2
     }
 
     private val data = ArrayList<AsteroidsObject>()
+    private var deleteItem: AsteroidsObject? = null
+    private var deleteTimer: CountDownTimer? = null
+    private var deletePosition = -1
     var isSwipable = false
         get() = field
         private set(value) {
@@ -112,12 +117,45 @@ class AsteroidsAdapter(
     }
 
     override fun onItemDismiss(position: Int) {
-        callbacks.onItemDismissed(position)
-        data.removeAt(position)
+        deleteTimer?.let {
+            it.cancel()
+            deleteFromBase()
+        }
+        deletePosition = position
+        deleteItem = data.removeAt(position)
         notifyItemRemoved(position)
+        callbacks.notifDeleteItem(position)
+
+        deleteTimer = object : CountDownTimer(TIME_TO_DELETE, TIME_TO_DELETE) {
+            override fun onTick(millisUntilFinished: Long) {
+            }
+
+            override fun onFinish() {
+                deleteTimer = null
+                deleteFromBase()
+            }
+        }
+        deleteTimer?.start()
+    }
+
+    fun deleteFromBase() {
+        deleteItem?.let {
+            val item = it as AsteroidsObject.Item
+            editor.deleteItem(item.entity)
+        }
+        deleteItem = null
     }
 
     fun switchSwipe(position: Int) {
         isSwipable = getItemViewType(position) == TYPE_ITEM
+    }
+
+    fun restoreDeletedItem(): Int {
+        deleteItem?.let {
+            data.add(deletePosition, it)
+            notifyItemInserted(deletePosition)
+            deleteItem = null
+        }
+        return deletePosition
     }
 }

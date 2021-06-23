@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import ru.neosvet.neonasa.R
 import ru.neosvet.neonasa.list.*
 import ru.neosvet.neonasa.model.AsteroidsModel
@@ -26,6 +27,8 @@ class AsteroidsFragment : Fragment(), Observer<AsteroidsState> {
     }
     private lateinit var itemTouchHelper: ItemTouchHelper
     private lateinit var dataAdapter: AsteroidsAdapter
+    private lateinit var rvAsteroids: RecyclerView
+    private var snackbar: Snackbar? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,6 +41,12 @@ class AsteroidsFragment : Fragment(), Observer<AsteroidsState> {
         super.onViewCreated(view, savedInstanceState)
         initList(view)
         model.requestAsteroids()
+    }
+
+    override fun onDestroyView() {
+        snackbar?.dismiss()
+        dataAdapter.deleteFromBase()
+        super.onDestroyView()
     }
 
     private fun initList(root: View) {
@@ -58,12 +67,27 @@ class AsteroidsFragment : Fragment(), Observer<AsteroidsState> {
                 updatePositionsInGroup(item.entity.updated)
             }
 
-            override fun onItemDismissed(position: Int) {
-                val item = dataAdapter.getItem(position) as AsteroidsObject.Item
-                model.removeAsterod(item.entity)
+            override fun notifDeleteItem(position: Int) {
+                snackbar?.dismiss()
+                snackbar = Snackbar.make(
+                    rvAsteroids,
+                    R.string.item_deleted,
+                    AsteroidsAdapter.TIME_TO_DELETE.toInt()
+                )
+                snackbar?.setAction(R.string.restore, View.OnClickListener {
+                    val pos = dataAdapter.restoreDeletedItem()
+                    if (pos > -1)
+                        rvAsteroids.scrollToPosition(pos)
+                    snackbar?.dismiss()
+                })
+                snackbar?.show()
             }
         },
             object : AsteroidEditor {
+                override fun deleteItem(item: AsteroidEntity) {
+                    model.removeAsterod(item)
+                }
+
                 override fun startEdit(position: Int) {
                     dataAdapter.editItem(position)
                 }
@@ -78,7 +102,7 @@ class AsteroidsFragment : Fragment(), Observer<AsteroidsState> {
                 }
             })
 
-        val rvAsteroids = root.findViewById(R.id.rvAsteroids) as RecyclerView
+        rvAsteroids = root.findViewById(R.id.rvAsteroids) as RecyclerView
         rvAsteroids.layoutManager = LinearLayoutManager(requireContext())
         rvAsteroids.adapter = dataAdapter
 

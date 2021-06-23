@@ -23,4 +23,6 @@
     <string name="priority">Приоритет</string>
     <string name="note">Заметка</string>
     <string name="more">… Ещё</string>
+    <string name="item_deleted">Элемент был удалён</string>
+    <string name="restore">Восстановить</string>
 </resources>

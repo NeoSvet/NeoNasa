@@ -21,10 +21,11 @@ interface ListCallbacks {
     fun onItemTouched(position: Int)
     fun onStartDrag(viewHolder: RecyclerView.ViewHolder)
     fun onItemMoved(position: Int)
-    fun onItemDismissed(position: Int)
+    fun notifDeleteItem(position: Int)
 }
 
 interface AsteroidEditor {
+    fun deleteItem(item: AsteroidEntity)
     fun startEdit(position: Int)
     fun cancelEdit(position: Int)
     fun saveEdit(position: Int, asteroid: AsteroidEntity)
