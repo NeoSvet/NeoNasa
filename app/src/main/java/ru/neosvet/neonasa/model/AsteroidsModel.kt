@@ -6,7 +6,11 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import ru.neosvet.neonasa.BuildConfig
-import ru.neosvet.neonasa.repository.*
+import ru.neosvet.neonasa.repository.AsteroidsRepository
+import ru.neosvet.neonasa.repository.AsteroidsResponse
+import ru.neosvet.neonasa.repository.AsteroidsState
+import ru.neosvet.neonasa.repository.NasaRetrofit
+import ru.neosvet.neonasa.repository.room.AsteroidEntity
 
 class AsteroidsModel : ViewModel() {
     private val state: MutableLiveData<AsteroidsState> = MutableLiveData()
@@ -14,6 +18,10 @@ class AsteroidsModel : ViewModel() {
     private val repository = AsteroidsRepository()
 
     fun getState() = state
+
+    fun removeAsterod(asteroid: AsteroidEntity) {
+        repository.removeAsterod(asteroid)
+    }
 
     fun requestAsteroids() {
         state.value = AsteroidsState.Loading
@@ -61,4 +69,7 @@ class AsteroidsModel : ViewModel() {
         }
     }
 
+    fun update(asteroid: AsteroidEntity) {
+        repository.update(asteroid)
+    }
 }

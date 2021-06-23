@@ -1,50 +1,161 @@
 package ru.neosvet.neonasa.list
 
+import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.neosvet.neonasa.R
 import ru.neosvet.neonasa.repository.room.AsteroidEntity
 
-class AsteroidsAdapter : RecyclerView.Adapter<AsteroidsHolder>() {
+class AsteroidsAdapter(
+    private val callbacks: ListCallbacks,
+    private val editor: AsteroidEditor
+) : RecyclerView.Adapter<AsteroidsHolder>(), ItemTouchHelperAdapter {
     companion object {
+        val TIME_TO_DELETE: Long = 5000
         val TYPE_TITLE = 0
         val TYPE_ITEM = 1
+        val TYPE_EDIT_ITEM = 2
     }
 
-    private val list = ArrayList<AsteroidsObject>()
+    private val data = ArrayList<AsteroidsObject>()
+    private var deleteItem: AsteroidsObject? = null
+    private var deleteTimer: CountDownTimer? = null
+    private var deletePosition = -1
+    var isSwipable = false
+        get() = field
+        private set(value) {
+            field = value
+        }
 
     fun addItem(title: String) {
-        list.add(AsteroidsObject.Title(title))
+        data.add(AsteroidsObject.Title(title))
     }
 
     fun addItem(entity: AsteroidEntity) {
-        list.add(AsteroidsObject.Item(entity))
+        data.add(AsteroidsObject.Item(entity, false))
     }
 
-    override fun getItemViewType(position: Int) = when (list[position]) {
+    fun getItem(position: Int) = data[position]
+
+    fun getItems() = data
+
+    fun editItem(position: Int) {
+        val item = data[position] as AsteroidsObject.Item
+        item.edit = !item.edit
+        notifyItemChanged(position)
+    }
+
+    fun updateItem(position: Int, entity: AsteroidEntity) {
+        data[position] = AsteroidsObject.Item(entity, false)
+        notifyItemChanged(position)
+    }
+
+    override fun getItemViewType(position: Int) = when (data[position]) {
         is AsteroidsObject.Title -> TYPE_TITLE
-        is AsteroidsObject.Item -> TYPE_ITEM
+        is AsteroidsObject.Item -> {
+            if ((data[position] as AsteroidsObject.Item).edit)
+                TYPE_EDIT_ITEM
+            else
+                TYPE_ITEM
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AsteroidsHolder {
         return when (viewType) {
             TYPE_ITEM -> AsteroidsHolders.Item(
-                LayoutInflater.from(parent.context).inflate(R.layout.asteroid_item, parent, false)
+                LayoutInflater.from(parent.context)
+                    .inflate(R.layout.asteroid_item, parent, false),
+                callbacks,
+                editor
+            )
+            TYPE_EDIT_ITEM -> AsteroidsHolders.Item(
+                LayoutInflater.from(parent.context)
+                    .inflate(R.layout.asteroid_edit_item, parent, false),
+                callbacks,
+                editor
             )
             else -> AsteroidsHolders.Title(
-                LayoutInflater.from(parent.context).inflate(R.layout.title_item, parent, false)
+                LayoutInflater.from(parent.context)
+                    .inflate(R.layout.title_item, parent, false),
+                callbacks
             )
         }
     }
 
     override fun onBindViewHolder(holder: AsteroidsHolder, position: Int) {
-        holder.bind(list[position])
+        holder.bind(data[position])
     }
 
-    override fun getItemCount() = list.size
+    override fun getItemCount() = data.size
 
-    fun clear() {
-        list.clear()
+    fun clear() = data.clear()
+
+    override fun onItemMove(fromPosition: Int, toPosition: Int) {
+        val index = findTitleIndex(fromPosition, toPosition)
+        if (index != -1)
+            return
+        val newPosition = if (toPosition > fromPosition)
+            toPosition - 1
+        else
+            toPosition
+        data.removeAt(fromPosition).let {
+            data.add(newPosition, it)
+        }
+        notifyItemMoved(fromPosition, newPosition)
+    }
+
+    private fun findTitleIndex(fromPosition: Int, toPosition: Int): Int {
+        val step = if (fromPosition < toPosition) 1 else -1
+        var index = fromPosition
+        while (index != toPosition) {
+            index += step
+            if (data[index] is AsteroidsObject.Title)
+                return index
+        }
+        return -1
+    }
+
+    override fun onItemDismiss(position: Int) {
+        deleteTimer?.let {
+            it.cancel()
+            deleteFromBase()
+        }
+        deletePosition = position
+        deleteItem = data.removeAt(position)
+        notifyItemRemoved(position)
+        callbacks.notifDeleteItem(position)
+
+        deleteTimer = object : CountDownTimer(TIME_TO_DELETE, TIME_TO_DELETE) {
+            override fun onTick(millisUntilFinished: Long) {
+            }
+
+            override fun onFinish() {
+                deleteTimer = null
+                deleteFromBase()
+            }
+        }
+        deleteTimer?.start()
+    }
+
+    fun deleteFromBase() {
+        deleteItem?.let {
+            val item = it as AsteroidsObject.Item
+            editor.deleteItem(item.entity)
+        }
+        deleteItem = null
+    }
+
+    fun switchSwipe(position: Int) {
+        isSwipable = getItemViewType(position) == TYPE_ITEM
+    }
+
+    fun restoreDeletedItem(): Int {
+        deleteItem?.let {
+            data.add(deletePosition, it)
+            notifyItemInserted(deletePosition)
+            deleteItem = null
+        }
+        return deletePosition
     }
 }

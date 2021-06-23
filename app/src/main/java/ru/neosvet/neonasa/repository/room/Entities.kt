@@ -19,6 +19,7 @@ data class AsteroidEntity(
     val diameter_max: Float? = null,
     val distance: Int? = null,
     val link: String = "",
+    var position: Int = 0,
     var note: String? = null,
     var priority: Int = 0,
     var marked: Boolean = false

@@ -18,6 +18,9 @@
         <item name="chipStyle">@style/ChipStyle</item>
         <item name="bottomNavigationStyle">@style/BottomNavStyle</item>
         <item name="cardViewStyle">@style/CardStyle</item>
+        <item name="snackbarStyle">@style/SnackbarStyle</item>
+        <item name="snackbarTextViewStyle">@style/SnackbarTextStyle</item>
+        <item name="snackbarButtonStyle">@style/SnackbarButtonStyle</item>
     </style>
 
     <style name="Theme.Snowflakes" parent="Theme.MaterialComponents.DayNight.NoActionBar">
@@ -38,10 +41,12 @@
         <item name="chipStyle">@style/ChipStyle</item>
         <item name="bottomNavigationStyle">@style/BottomNavStyle</item>
         <item name="cardViewStyle">@style/CardStyle</item>
+        <item name="snackbarStyle">@style/SnackbarStyle</item>
+        <item name="snackbarTextViewStyle">@style/SnackbarTextStyle</item>
+        <item name="snackbarButtonStyle">@style/SnackbarButtonStyle</item>
     </style>
 
     <style name="TextInputLayoutStyle" parent="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="android:background">?attr/PicBackground</item>
         <item name="android:padding">@dimen/half_indent</item>
         <item name="android:textColor">?attr/colorOnPrimary</item>
         <item name="android:textColorHint">?attr/colorOnSecondary</item>
@@ -52,6 +57,23 @@
         <item name="helperTextTextColor">?attr/colorOnSecondary</item>
         <item name="hintTextColor">?attr/colorOnSecondary</item>
         <item name="placeholderTextColor">?attr/colorOnSecondary</item>
+    </style>
+
+    <style name="SnackbarStyle" parent="@style/Widget.MaterialComponents.Snackbar">
+        <item name="android:background">@drawable/secondary_field</item>
+        <item name="android:layout_margin">@null</item>
+        <item name="android:layout_marginStart">@dimen/half_indent</item>
+        <item name="android:layout_marginEnd">@dimen/half_indent</item>
+        <item name="android:layout_marginBottom">60dp</item>
+    </style>
+
+    <style name="SnackbarTextStyle" parent="@style/Widget.MaterialComponents.Snackbar.TextView">
+        <item name="android:textColor">?attr/colorOnSecondary</item>
+    </style>
+
+    <style name="SnackbarButtonStyle" parent="@style/Widget.MaterialComponents.Button.TextButton.Snackbar">
+        <item name="android:textColor">?attr/colorAccent</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="ChipStyle" parent="@style/Widget.MaterialComponents.Chip.Choice">

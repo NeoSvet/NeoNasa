@@ -31,6 +31,7 @@
         android:id="@+id/lSearch"
         android:layout_width="match_parent"
         android:layout_height="90dp"
+        android:background="?attr/PicBackground"
         android:hint="@string/search_wiki"
         app:counterEnabled="true"
         app:counterMaxLength="20"

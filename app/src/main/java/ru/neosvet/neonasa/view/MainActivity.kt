@@ -89,7 +89,7 @@ class MainActivity : AppCompatActivity() {
             fabSearch.setImageDrawable(
                 ContextCompat.getDrawable(
                     this,
-                    R.drawable.ic_search_24
+                    R.drawable.ic_search
                 )
             )
             isSearch = true
@@ -193,7 +193,7 @@ class MainActivity : AppCompatActivity() {
         fabSearch.setImageDrawable(
             ContextCompat.getDrawable(
                 this,
-                R.drawable.ic_close_24
+                R.drawable.ic_close
             )
         )
         isSearch = false
@@ -203,7 +203,7 @@ class MainActivity : AppCompatActivity() {
         fabSearch.setImageDrawable(
             ContextCompat.getDrawable(
                 this,
-                R.drawable.ic_search_24
+                R.drawable.ic_search
             )
         )
         isSearch = true
