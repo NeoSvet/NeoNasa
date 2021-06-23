@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.util.TypedValue
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.graphics.blue
 import androidx.core.graphics.green
 import androidx.core.graphics.red
@@ -111,7 +112,7 @@ class ItemTouchHelperCallback(private val adapter: AsteroidsAdapter) :
                 val blue = if (primary.blue - m < 0) 0 else primary.blue - m
                 viewHolder.itemView.setBackgroundColor(Color.argb(255, red, green, blue))
             } else {
-                viewHolder.itemView.background = context.getDrawable(R.drawable.primary_field)
+                viewHolder.itemView.background = AppCompatResources.getDrawable(context, R.drawable.primary_field)
             }
             viewHolder.itemView.translationX = dX
         } else {

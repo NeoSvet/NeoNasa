@@ -7,6 +7,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatSeekBar
 import androidx.core.view.MotionEventCompat
@@ -140,12 +141,13 @@ sealed class AsteroidsHolders {
         }
 
         override fun onItemSelected() {
-            itemView.background = context.getDrawable(R.drawable.secondary_field)
+            itemView.background =
+                AppCompatResources.getDrawable(context, R.drawable.secondary_field)
             startPosition = adapterPosition
         }
 
         override fun onItemClear() {
-            itemView.background = context.getDrawable(R.drawable.primary_field)
+            itemView.background = AppCompatResources.getDrawable(context, R.drawable.primary_field)
             if (adapterPosition == -1)
                 return //item is removed
             if (startPosition != adapterPosition)
