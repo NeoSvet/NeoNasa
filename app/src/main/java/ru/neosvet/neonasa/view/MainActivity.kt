@@ -48,7 +48,8 @@ class MainActivity : AppCompatActivity() {
             }
     }
     private val animHideMainBar: ObjectAnimator by lazy {
-        ObjectAnimator.ofFloat(barMain, "translationY", 115f)
+        val y = 56f * resources.displayMetrics.density
+        ObjectAnimator.ofFloat(barMain, "translationY", y)
             .apply {
                 duration = 500
             }
