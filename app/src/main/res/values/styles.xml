@@ -144,6 +144,7 @@
 
     <style name="CollapsedTitleTextStyle">
         <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="android:fontFamily">@font/spacequest</item>
     </style>
 
     <style name="NormalTextStyle">
