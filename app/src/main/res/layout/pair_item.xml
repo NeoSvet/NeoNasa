@@ -16,17 +16,15 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvTitle"
+            style="@style/SelectTextStyle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="?attr/colorOnPrimary"
-            android:textSize="@dimen/big_text" />
+            android:layout_height="wrap_content" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvValue"
+            style="@style/NormalTextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/full_indent"
-            android:textColor="?attr/colorOnPrimary"
-            android:textSize="@dimen/normal_text" />
+            android:layout_marginStart="@dimen/full_indent" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

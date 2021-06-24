@@ -17,12 +17,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="?attr/colorOnPrimary"
+        android:fontFamily="@font/spacequest"
         android:textSize="@dimen/big_text" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tvInfo"
+        android:fontFamily="@font/jlsdatagothiccnc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="?attr/colorOnPrimary"
-        android:textSize="@dimen/normal_text" />
+        android:textSize="@dimen/big_text" />
 </LinearLayout>

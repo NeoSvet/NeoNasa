@@ -3,7 +3,7 @@
     <dimen name="half_indent">5dp</dimen>
     <dimen name="full_indent">10dp</dimen>
     <dimen name="big_indent">15dp</dimen>
-    <dimen name="normal_text">14sp</dimen>
+    <dimen name="normal_text">16sp</dimen>
     <dimen name="big_text">20sp</dimen>
     <dimen name="appbar_video">150dp</dimen>
     <dimen name="status_show">20dp</dimen>

@@ -46,11 +46,11 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etSearch"
+            style="@style/EditTextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:imeOptions="actionGo"
-            android:inputType="text"
-            android:textColor="?attr/colorOnPrimary" />
+            android:inputType="text" />
     </com.google.android.material.textfield.TextInputLayout>
 
 </androidx.constraintlayout.motion.widget.MotionLayout>
