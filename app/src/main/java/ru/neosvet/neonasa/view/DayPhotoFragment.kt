@@ -116,7 +116,7 @@ class DayPhotoFragment : Fragment(), Observer<PhotoState>, Callback {
         if (title.isNullOrEmpty() || info.isNullOrEmpty())
             return
         toolbar.title = title
-        tvInfo.text = info
+        tvInfo.text = model.selectWords(info, mainAct)
     }
 
     override fun onSuccess() { //com.squareup.picasso

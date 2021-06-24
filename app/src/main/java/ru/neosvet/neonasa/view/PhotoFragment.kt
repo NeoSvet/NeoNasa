@@ -233,7 +233,7 @@ class PhotoFragment : Fragment(), Observer<PhotoState>, Callback {
         if (title.isNullOrEmpty() || info.isNullOrEmpty())
             return
         tvTitle.text = title
-        tvInfo.text = info
+        tvInfo.text = model.selectWords(info, mainAct)
     }
 
     override fun onSuccess() { //com.squareup.picasso

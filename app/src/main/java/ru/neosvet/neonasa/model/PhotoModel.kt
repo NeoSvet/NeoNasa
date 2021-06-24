@@ -1,5 +1,12 @@
 package ru.neosvet.neonasa.model
 
+import android.content.Context
+import android.graphics.Color
+import android.graphics.Typeface.BOLD
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
 import android.widget.ImageView
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,8 +17,15 @@ import retrofit2.Response
 import ru.neosvet.neonasa.BuildConfig
 import ru.neosvet.neonasa.R
 import ru.neosvet.neonasa.repository.*
+import ru.neosvet.neonasa.utils.SettingsUtils
+import ru.neosvet.neonasa.utils.Theme
 
 class PhotoModel : ViewModel() {
+    private val wordsForSelect = listOf(
+        "galaxy", "space", "solar", "sun", "earth", "moon", "mars",
+        "mercury", "venus", "jupiter", "saturn", "uranus", "neptune",
+        "sirius", "milky way", "andromeda", "alpha centauri"
+    )
     private val state: MutableLiveData<PhotoState> = MutableLiveData()
     private val retrofitImpl = NasaRetrofit()
 
@@ -177,5 +191,32 @@ class PhotoModel : ViewModel() {
             .placeholder(R.drawable.ic_no_photo_vector)
             .error(R.drawable.ic_load_error_vector)
             .into(view, callback)
+    }
+
+    fun selectWords(s: String, context: Context): SpannableString {
+        val settings = SettingsUtils(context)
+        val isDark = settings.getTheme() == Theme.STAR_SKY
+        var i: Int
+        val result = SpannableString(s)
+        val t = s.lowercase()
+        wordsForSelect.forEach {
+            i = t.indexOf(it)
+            while (i > -1) {
+                result.setSpan(
+                    ForegroundColorSpan(
+                        if (isDark) Color.CYAN else Color.BLUE
+                    ),
+                    i, i + it.length,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+                result.setSpan(
+                    StyleSpan(BOLD),
+                    i, i + it.length,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+                i = t.indexOf(it, i + 1)
+            }
+        }
+        return result
     }
 }
