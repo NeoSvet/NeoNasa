@@ -3,7 +3,6 @@
     <style name="Theme.StarSky" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@android:color/black</item>
-        <item name="colorPrimaryVariant">#98B4DD</item>
         <item name="colorOnPrimary">@android:color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">#406092</item>
@@ -25,8 +24,7 @@
 
     <style name="Theme.Snowflakes" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">#6C9ADA</item>
-        <item name="colorPrimaryVariant">#98B4DD</item>
+        <item name="colorPrimary">#A9C8F6</item>
         <item name="colorOnPrimary">@android:color/black</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">#C0DDFA</item>
@@ -49,14 +47,25 @@
     <style name="TextInputLayoutStyle" parent="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="android:padding">@dimen/half_indent</item>
         <item name="android:textColor">?attr/colorOnPrimary</item>
-        <item name="android:textColorHint">?attr/colorOnSecondary</item>
-        <item name="counterTextColor">?attr/colorOnSecondary</item>
         <item name="boxBackgroundMode">outline</item>
         <item name="boxStrokeColor">@color/input_border</item>
         <item name="boxStrokeWidth">2dp</item>
+        <item name="android:textColorHint">?attr/colorOnSecondary</item>
+
+        <item name="counterTextColor">?attr/colorOnSecondary</item>
         <item name="helperTextTextColor">?attr/colorOnSecondary</item>
         <item name="hintTextColor">?attr/colorOnSecondary</item>
         <item name="placeholderTextColor">?attr/colorOnSecondary</item>
+
+        <item name="counterTextAppearance">@style/TextInputLayoutStyle.Text</item>
+        <item name="helperTextTextAppearance">@style/TextInputLayoutStyle.Text</item>
+        <item name="hintTextAppearance">@style/TextInputLayoutStyle.Text</item>
+        <item name="placeholderTextAppearance">@style/TextInputLayoutStyle.Text</item>
+    </style>
+
+    <style name="TextInputLayoutStyle.Text">
+        <item name="android:fontFamily">@font/jlsdatagothiccnc</item>
+        <item name="android:textSize">12sp</item>
     </style>
 
     <style name="SnackbarStyle" parent="@style/Widget.MaterialComponents.Snackbar">
@@ -68,15 +77,19 @@
     </style>
 
     <style name="SnackbarTextStyle" parent="@style/Widget.MaterialComponents.Snackbar.TextView">
+        <item name="android:fontFamily">@font/jlsdatagothiccnc</item>
         <item name="android:textColor">?attr/colorOnSecondary</item>
     </style>
 
     <style name="SnackbarButtonStyle" parent="@style/Widget.MaterialComponents.Button.TextButton.Snackbar">
+        <item name="android:fontFamily">@font/jlsdatagothiccnc</item>
         <item name="android:textColor">?attr/colorAccent</item>
         <item name="android:textStyle">bold</item>
     </style>
 
     <style name="ChipStyle" parent="@style/Widget.MaterialComponents.Chip.Choice">
+        <item name="android:fontFamily">@font/jlsdatagothiccnc</item>
+        <item name="android:textSize">@dimen/normal_text</item>
         <item name="checkedIconVisible">true</item>
         <item name="android:textColor">?attr/colorOnSecondary</item>
         <item name="checkedIconTint">?attr/colorOnSecondary</item>
@@ -84,9 +97,13 @@
     </style>
 
     <style name="BottomNavStyle" parent="@style/Widget.MaterialComponents.BottomNavigationView.Colored">
-        <item name="background">?attr/PicBackground</item>
-        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="itemTextAppearanceActive">@style/BottomTextStyle</item>
         <item name="backgroundTint">?attr/colorPrimary</item>
+    </style>
+
+    <style name="BottomTextStyle">
+        <item name="android:fontFamily">@font/jlsdatagothiccnc</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
     </style>
 
     <style name="CardStyle" parent="@style/Widget.MaterialComponents.CardView">
@@ -103,12 +120,14 @@
     </style>
 
     <style name="TabTextStyle">
-        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@font/jlsdatagothiccnc</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
     <style name="StatusLabel">
         <item name="android:textColor">?attr/colorOnPrimary</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">@dimen/big_text</item>
+        <item name="android:fontFamily">@font/jlsdatagothiccnc</item>
         <item name="android:layout_marginEnd">@dimen/full_indent</item>
         <item name="android:gravity">center_vertical</item>
     </style>
@@ -120,19 +139,29 @@
         <item name="android:textSize">25sp</item>
         <item name="android:shadowColor">@android:color/black</item>
         <item name="android:textColor">@android:color/white</item>
+        <item name="android:fontFamily">@font/spacequest</item>
     </style>
 
     <style name="CollapsedTitleTextStyle">
         <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="android:fontFamily">@font/spacequest</item>
     </style>
 
     <style name="NormalTextStyle">
+        <item name="android:fontFamily">@font/jlsdatagothiccnc</item>
         <item name="android:textSize">@dimen/normal_text</item>
         <item name="android:textColor">?attr/colorOnPrimary</item>
     </style>
 
     <style name="SelectTextStyle">
+        <item name="android:fontFamily">@font/jlsdatagothiccnc</item>
         <item name="android:textSize">@dimen/normal_text</item>
         <item name="android:textColor">?attr/colorOnSecondary</item>
+    </style>
+
+    <style name="EditTextStyle">
+        <item name="android:fontFamily">@font/jlsdatagothiccnc</item>
+        <item name="android:textSize">@dimen/big_text</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
     </style>
 </resources>

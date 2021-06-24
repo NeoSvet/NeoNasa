@@ -67,10 +67,10 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etNote"
+                style="@style/EditTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textMultiLine"
-                android:textColor="?attr/colorOnPrimary" />
+                android:inputType="textMultiLine" />
         </com.google.android.material.textfield.TextInputLayout>
 
 
