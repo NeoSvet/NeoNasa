@@ -53,6 +53,7 @@ class PhotoFragment : Fragment(), Observer<PhotoState>, Callback {
     private lateinit var tvInfo: TextView
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
     private var isExpanded = false
+    private var animPhotoScroll: ObjectAnimator? = null
     private val animPhotoRestore: ObjectAnimator by lazy {
         ObjectAnimator.ofFloat(ivPhoto, "translationX", 0f)
             .apply {
@@ -121,6 +122,14 @@ class PhotoFragment : Fragment(), Observer<PhotoState>, Callback {
         }
 
         val root = ivPhoto.parent as ViewGroup
+
+        animPhotoRestore.cancel()
+        animPhotoScroll?.let {
+            animPhotoScroll = null
+            it.cancel()
+        }
+        TransitionManager.endTransitions(root)
+
         TransitionManager.beginDelayedTransition(
             root, TransitionSet()
                 .addTransition(ChangeBounds())
@@ -130,7 +139,6 @@ class PhotoFragment : Fragment(), Observer<PhotoState>, Callback {
         ivPhoto.scaleType =
             if (isExpanded) ImageView.ScaleType.FIT_XY
             else ImageView.ScaleType.FIT_START
-
 
         val params = ivPhoto.getLayoutParams() as ViewGroup.MarginLayoutParams
 
@@ -142,7 +150,7 @@ class PhotoFragment : Fragment(), Observer<PhotoState>, Callback {
             val f: Float = img_w * (sizeScreen.height.toFloat() / img_h)
             params.width = f.toInt()
 
-            animPhotoScroll(f)
+            startAnimPhotoScroll(f)
         } else {
             params.height = ViewGroup.LayoutParams.MATCH_PARENT
             params.width = ViewGroup.LayoutParams.MATCH_PARENT
@@ -151,14 +159,17 @@ class PhotoFragment : Fragment(), Observer<PhotoState>, Callback {
         ivPhoto.setLayoutParams(params)
     }
 
-    private fun animPhotoScroll(photoWidth: Float) {
+    private fun startAnimPhotoScroll(photoWidth: Float) {
         val time = (photoWidth / sizeScreen.width * 1100).toLong()
         val toEnd = -(photoWidth - sizeScreen.width)
-        val anim1 = ObjectAnimator.ofFloat(ivPhoto, "translationX", toEnd)
+        animPhotoScroll = ObjectAnimator.ofFloat(ivPhoto, "translationX", toEnd)
             .apply {
                 duration = time
             }
-        anim1.addListener(onEnd = {
+        animPhotoScroll?.addListener(onEnd = {
+            if (animPhotoScroll == null)
+                return@addListener
+
             val toCenter = toEnd * 0.543478f
             val anim2 = ObjectAnimator.ofFloat(ivPhoto, "translationX", toCenter)
                 .apply {
@@ -166,7 +177,7 @@ class PhotoFragment : Fragment(), Observer<PhotoState>, Callback {
                 }
             anim2.start()
         })
-        anim1.start()
+        animPhotoScroll?.start()
     }
 
     private fun setBottomSheet() {
