@@ -180,7 +180,7 @@ class PhotoModel : ViewModel() {
         return PhotoResponse(
             "Mars ${photo.earthDate}",
             photo.rover.name + ", " + photo.camera.fullName,
-            photo.imgSrc,
+            photo.imgSrc.replace("http:", "https:"),
             null
         )
     }
