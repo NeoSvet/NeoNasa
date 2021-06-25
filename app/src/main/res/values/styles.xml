@@ -5,13 +5,13 @@
         <item name="colorPrimary">@android:color/black</item>
         <item name="colorOnPrimary">@android:color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">#406092</item>
-        <item name="colorOnSecondary">#C0DDFA</item>
+        <item name="colorSecondary">#223045</item>
+        <item name="colorOnSecondary">#9BD9ff</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimary</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="l">false</item>
         <!-- Customize your theme here. -->
-        <item name="colorAccent">#7200F1</item>
-        <item name="colorOnPrimarySurface">#48689b</item>
+        <item name="colorAccent">#5679AE</item>
         <item name="PicBackground">@drawable/stars_repeat</item>
         <item name="textInputStyle">@style/TextInputLayoutStyle</item>
         <item name="chipStyle">@style/ChipStyle</item>
@@ -22,18 +22,18 @@
         <item name="snackbarButtonStyle">@style/SnackbarButtonStyle</item>
     </style>
 
-    <style name="Theme.Snowflakes" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.Snowflakes" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">#A9C8F6</item>
+        <item name="colorPrimary">#C0DDFA</item>
         <item name="colorOnPrimary">@android:color/black</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">#C0DDFA</item>
-        <item name="colorOnSecondary">#406092</item>
+        <item name="colorSecondary">#A9C8F6</item>
+        <item name="colorOnSecondary">#5070A0</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimary</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="l">true</item>
         <!-- Customize your theme here. -->
-        <item name="colorAccent">#B578FA</item>
-        <item name="colorOnPrimarySurface">#2A75ED</item>
+        <item name="colorAccent">#88DDFF</item>
         <item name="PicBackground">@drawable/snowflakes_repeat</item>
         <item name="textInputStyle">@style/TextInputLayoutStyle</item>
         <item name="chipStyle">@style/ChipStyle</item>
