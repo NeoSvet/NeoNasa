@@ -54,7 +54,7 @@
             android:paddingStart="@dimen/full_indent"
             android:paddingTop="25dp"
             android:paddingEnd="@dimen/full_indent"
-            android:paddingBottom="@dimen/full_indent"
+            android:paddingBottom="60dp"
             android:textColor="?attr/colorOnPrimary"
             android:textSize="@dimen/big_text" />
     </androidx.core.widget.NestedScrollView>
