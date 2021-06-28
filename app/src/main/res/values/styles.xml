@@ -12,6 +12,7 @@
         <item name="android:windowLightStatusBar" tools:targetApi="l">false</item>
         <!-- Customize your theme here. -->
         <item name="colorAccent">#5679AE</item>
+        <item name="android:windowBackground">@drawable/logo_background</item>
         <item name="PicBackground">@drawable/stars_repeat</item>
         <item name="textInputStyle">@style/TextInputLayoutStyle</item>
         <item name="chipStyle">@style/ChipStyle</item>
@@ -34,6 +35,7 @@
         <item name="android:windowLightStatusBar" tools:targetApi="l">true</item>
         <!-- Customize your theme here. -->
         <item name="colorAccent">#88DDFF</item>
+        <item name="android:windowBackground">@drawable/logo_background</item>
         <item name="PicBackground">@drawable/snowflakes_repeat</item>
         <item name="textInputStyle">@style/TextInputLayoutStyle</item>
         <item name="chipStyle">@style/ChipStyle</item>
