@@ -73,6 +73,11 @@ class MainActivity : AppCompatActivity() {
             if (intent.getBooleanExtra(OPEN_SETTINGS, false)) {
                 openSettings()
                 barMain.selectedItemId = R.id.bottom_view_settings
+            } else {
+                supportFragmentManager.beginTransaction()
+                    .add(
+                        R.id.container, SlashFragment()
+                    ).commit()
             }
         }
     }
