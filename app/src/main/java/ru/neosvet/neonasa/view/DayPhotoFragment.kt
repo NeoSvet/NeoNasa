@@ -140,16 +140,16 @@ class DayPhotoFragment : Fragment(), Observer<PhotoState>, Callback {
         var w = p.measureText(text).toInt()
         val max = (img.width * 0.6f).toInt()
         while (w < max) {
-            p.textSize += 5
+            p.textSize++
             w = p.measureText(text).toInt()
         }
-        p.textSize = p.textSize * 1.2f
+        p.textSize *= 1.2f
 
         //count path for text
         val h = (img.height * 0.3f).toInt()
-        val left = w / 3f
+        val left = max / 3f
         val top = (img.height - h).toFloat()
-        val rect = RectF(left, top, left + w, top + h + h)
+        val rect = RectF(left, top, left + max, top + h + h)
         val path = Path()
         path.addArc(rect, 180f, 180f)
 
